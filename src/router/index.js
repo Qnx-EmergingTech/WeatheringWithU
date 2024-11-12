@@ -1,15 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HelloWorld from '@/components/HelloWorld.vue';
+import HomePage from '@/views/HomePage.vue';  
 
 const routes = [
     {
         path: '/',
         name: 'Root',
-        component: HelloWorld,
-        beforeEnter: (to, from, next) => {
-            // Redirect to "/manila" if only "/" is entered
-            next({ path: '/Manila' });
-        },
+        component: HomePage,
+        // beforeEnter: (to, from, next) => {
+        //     // Redirect to "/manila" if only "/" is entered
+        //     next({ path: '/Manila' });
+        // },
     },
     {
         path: '/:city/',
