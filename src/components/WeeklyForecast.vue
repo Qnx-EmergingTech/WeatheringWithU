@@ -25,19 +25,41 @@
     name: 'WeeklyForecast',
     data() {
       return {
-        forecast: [
-          { date: 'Nov 12', label: 'Today', icon: 'cloud', condition: 'Cloudy', minTemp: 28, maxTemp: 32 },
-          { date: 'Nov 13', label: 'Tomorrow', icon: 'sun', condition: 'Sunny', minTemp: 27, maxTemp: 31 },
-          { date: 'Nov 14', label: 'Thursday', icon: 'cloud-rain', condition: 'Rainy', minTemp: 25, maxTemp: 30 },
-          { date: 'Nov 15', label: 'Friday', icon: 'cloud', condition: 'Cloudy', minTemp: 28, maxTemp: 32 },
-          { date: 'Nov 16', label: 'Saturday', icon: 'sun', condition: 'Sunny', minTemp: 27, maxTemp: 31 },
-          { date: 'Nov 17', label: 'Sunday', icon: 'cloud-rain', condition: 'Rainy', minTemp: 25, maxTemp: 30 },
-          { date: 'Nov 19', label: 'Monday', icon: 'sun', condition: 'Sunny', minTemp: 27, maxTemp: 31 },
-
-        ],
+        forecast: this.generateForecast(),
       };
+    },
+    methods: {
+      generateForecast() {
+        const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const today = new Date();
+        
+        // Static data
+        const staticForecastData = [
+          { icon: 'cloud', condition: 'Cloudy', minTemp: 28, maxTemp: 32 },
+          { icon: 'sun', condition: 'Sunny', minTemp: 27, maxTemp: 31 },
+          { icon: 'cloud-rain', condition: 'Rainy', minTemp: 25, maxTemp: 30 },
+          { icon: 'cloud', condition: 'Cloudy', minTemp: 28, maxTemp: 32 },
+          { icon: 'sun', condition: 'Sunny', minTemp: 27, maxTemp: 31 },
+          { icon: 'cloud-rain', condition: 'Rainy', minTemp: 25, maxTemp: 30 },
+          { icon: 'sun', condition: 'Sunny', minTemp: 27, maxTemp: 31 },
+        ];
+  
+        const forecastDays = [];
+        for (let i = 0; i < 7; i++) {
+          const nextDay = new Date();
+          nextDay.setDate(today.getDate() + i);
+          const dayDate = nextDay.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+          const dayLabel = i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : daysOfWeek[nextDay.getDay()]; 
+  
+          forecastDays.push({
+            date: dayDate,
+            label: dayLabel,
+            ...staticForecastData[i], // Static Data 
+          });
+        }
+  
+        return forecastDays;
+      },
     },
   };
   </script>
-
-  
