@@ -1,68 +1,74 @@
 <template>
-  <div class="relative w-full h-screen flex flex-col bg-cover bg-center" :style="{ backgroundImage: `url(${imageUrl})` }">
+  <div class="relative w-full h-screen flex flex-col bg-cover bg-center justify-center items-center"
+    :style="{ backgroundImage: `url(${imageUrl})` }">
     <!-- Weather information on top of the background image -->
-    <div class="w-full h-full text-white z-10 flex flex-col justify-between p-6 sm:p-20">
-      <div class="flex items-center space-x-2 sm:space-x-4">
+    <div class="w-full h-full text-white z-10 flex flex-col justify-center items-center p-6 sm:p-20">
+      <div class="flex items-center space-x-2 sm:space-x-4 justify-center">
         <!-- Time -->
         <div class="text-[40px] sm:text-[60px] lg:text-[90px] font-bold">{{ currentTime }}</div>
-        
+
         <!-- Divider  -->
         <div class="text-[100px] sm:text-[150px] lg:text-[250px] -mt-4 sm:-mt-8 lg:-mt-10">|</div>
-        
+
         <!-- Location  -->
-        <div class="text-[60px] sm:text-[140px] lg:text-[239px] font-bold relative">
+        <div class="text-[60px] sm:text-[140px] lg:text-[239px] font-bold relative text-center">
           Manila
 
           <!-- Temperature  -->
-          <div class="absolute top-[-20px] sm:top-[-30px] lg:top-[50px] right-[-60px] sm:right-[-100px] lg:right-[-140px] text-[50px] sm:text-[80px] lg:text-[100px] font-bold leading-none">
+          <div
+            class="absolute top-[-20px] sm:top-[-30px] lg:top-[50px] right-[-60px] sm:right-[-100px] lg:right-[-140px] text-[50px] sm:text-[80px] lg:text-[100px] font-bold leading-none">
             28<span class="text-[20px] sm:text-[25px] lg:text-[30px]">°C</span>
           </div>
 
           <!-- Weather  -->
-          <div class="absolute top-[-50px] sm:top-[-70px] lg:top-[50px] right-[-100px] sm:right-[-200px] lg:right-[-250px] text-[20px] sm:text-[30px] lg:text-[40px] font-bold">
+          <div
+            class="absolute top-[-50px] sm:top-[-70px] lg:top-[50px] right-[-100px] sm:right-[-200px] lg:right-[-250px] text-[20px] sm:text-[30px] lg:text-[40px] font-bold">
             Cloudy
           </div>
         </div>
       </div>
-      <div class="flex flex-row w-full h-90 justify-between text-white font-bold text-3xl">
-        <div class="flex flex-row w-full h-56 justify-start gap-4">
-          <div class="bg-[#777777] opacity-75	h-full w-40">
+
+      <!-- Weather forecast section -->
+      <div class="flex flex-row w-full h-90 justify-center text-white font-bold text-3xl mt-4">
+        <div class="flex flex-row w-full h-56 justify-center gap-4">
+          <!-- Weather forecast blocks -->
+          <div class="bg-[#777777] opacity-75 h-full w-40">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
               <span>00:00</span>
               <span class="tracking-wider">CLOUDY</span>
             </div>
           </div>
-          <div class="bg-[#777777] opacity-75	h-full w-40">
-            <div class="h-full w-full flex flex-col justify-evenly items-center opacity-100">
-              <span>00:00</span>
-              <span class="tracking-wider">CLOUDY</span>
-            </div>
-          </div>
-          <div class="bg-[#777777] opacity-75	h-full w-40">
+          <div class="bg-[#777777] opacity-75 h-full w-40">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
               <span>00:00</span>
               <span class="tracking-wider">CLOUDY</span>
             </div>
           </div>
-          <div class="bg-[#777777] opacity-75	h-full w-40">
+          <div class="bg-[#777777] opacity-75 h-full w-40">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
               <span>00:00</span>
               <span class="tracking-wider">CLOUDY</span>
             </div>
           </div>
-          <div class="bg-[#777777] opacity-75	h-full w-40">
+          <div class="bg-[#777777] opacity-75 h-full w-40">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
               <span>00:00</span>
               <span class="tracking-wider">CLOUDY</span>
             </div>
           </div>
-          <div class="bg-[#777777] opacity-75	h-full w-40">
+          <div class="bg-[#777777] opacity-75 h-full w-40">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
               <span>00:00</span>
               <span class="tracking-wider">CLOUDY</span>
             </div>
           </div>
-          <div class="bg-[#777777] opacity-75	h-full w-40">
+          <div class="bg-[#777777] opacity-75 h-full w-40">
+            <div class="h-full w-full flex flex-col justify-evenly items-center">
+              <span>00:00</span>
+              <span class="tracking-wider">CLOUDY</span>
+            </div>
+          </div>
+          <div class="bg-[#777777] opacity-75 h-full w-40">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
               <span>00:00</span>
               <span class="tracking-wider">CLOUDY</span>
@@ -90,7 +96,7 @@ export default {
       this.currentTime = this.getCurrentTime();
     }, 1000);
   },
-  beforeUnmount() {  // Change from beforeDestroy to beforeUnmount
+  beforeUnmount() {
     // Clear the interval when the component is destroyed
     clearInterval(this.timeInterval);
   },
@@ -105,3 +111,4 @@ export default {
   }
 };
 </script>
+
