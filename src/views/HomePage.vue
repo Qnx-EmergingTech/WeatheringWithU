@@ -1,14 +1,7 @@
 <template>
-  <div class="relative w-full h-screen">
-    <!-- Full-screen background image -->
-    <img 
-      :src="imageUrl" 
-      alt="Landing Page Image" 
-      class="absolute top-0 left-0 w-full h-full object-cover z-10" 
-    />
-
-    <!-- Weather information -->
-    <div class="absolute top-10 sm:top-20 left-6 sm:left-20 text-white z-20">
+  <div class="relative w-full h-screen flex flex-col bg-cover bg-center" :style="{ backgroundImage: `url(${imageUrl})` }">
+    <!-- Weather information on top of the background image -->
+    <div class="w-full h-full text-white z-10 flex flex-col justify-between p-6 sm:p-20">
       <div class="flex items-center space-x-2 sm:space-x-4">
         <!-- Time -->
         <div class="text-[40px] sm:text-[60px] lg:text-[90px] font-bold">{{ currentTime }}</div>
@@ -31,9 +24,56 @@
           </div>
         </div>
       </div>
+      <div class="flex flex-row w-full h-90 justify-between text-white font-bold text-3xl">
+        <div class="flex flex-row w-full h-56 justify-start gap-4">
+          <div class="bg-[#777777] opacity-75	h-full w-40">
+            <div class="h-full w-full flex flex-col justify-evenly items-center">
+              <span>00:00</span>
+              <span class="tracking-wider">CLOUDY</span>
+            </div>
+          </div>
+          <div class="bg-[#777777] opacity-75	h-full w-40">
+            <div class="h-full w-full flex flex-col justify-evenly items-center opacity-100">
+              <span>00:00</span>
+              <span class="tracking-wider">CLOUDY</span>
+            </div>
+          </div>
+          <div class="bg-[#777777] opacity-75	h-full w-40">
+            <div class="h-full w-full flex flex-col justify-evenly items-center">
+              <span>00:00</span>
+              <span class="tracking-wider">CLOUDY</span>
+            </div>
+          </div>
+          <div class="bg-[#777777] opacity-75	h-full w-40">
+            <div class="h-full w-full flex flex-col justify-evenly items-center">
+              <span>00:00</span>
+              <span class="tracking-wider">CLOUDY</span>
+            </div>
+          </div>
+          <div class="bg-[#777777] opacity-75	h-full w-40">
+            <div class="h-full w-full flex flex-col justify-evenly items-center">
+              <span>00:00</span>
+              <span class="tracking-wider">CLOUDY</span>
+            </div>
+          </div>
+          <div class="bg-[#777777] opacity-75	h-full w-40">
+            <div class="h-full w-full flex flex-col justify-evenly items-center">
+              <span>00:00</span>
+              <span class="tracking-wider">CLOUDY</span>
+            </div>
+          </div>
+          <div class="bg-[#777777] opacity-75	h-full w-40">
+            <div class="h-full w-full flex flex-col justify-evenly items-center">
+              <span>00:00</span>
+              <span class="tracking-wider">CLOUDY</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
+
 
 <script>
 export default {
