@@ -28,56 +28,73 @@
         </div>
       </div>
 
-      <!-- Weather forecast section -->
-      <div class="flex flex-row w-full h-90 justify-center text-white font-bold text-3xl mt-4">
-        <div class="flex flex-row w-full h-56 justify-center gap-4">
-          <!-- Weather forecast blocks -->
-          <div class="bg-[#777777] bg-opacity-75 h-full w-40">
+    <!-- Weather forecast -->
+    <div class="absolute bottom-10 left-0 w-full px-6 sm:px-20 text-white z-20">
+      <div class="flex flex-row justify-center gap-4 lg:gap-8">
+        <!-- Weather forecast blocks -->
+        <div class="flex flex-row flex-wrap justify-center mt-14 gap-4 lg:gap-6">
+          <div class="bg-gray-700 bg-opacity-75 h-36 sm:h-44 lg:h-56 w-24 sm:w-32 lg:w-40 p-2">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
-              <span>00:00</span>
-              <span class="tracking-wider">CLOUDY</span>
+              <span class="text-sm sm:text-lg lg:text-xl">00:00</span>
+              <font-awesome-icon icon="cloud" class="text-base sm:text-lg lg:text-5xl" />
+              <span class="tracking-wider text-xs sm:text-sm lg:text-base">CLOUDY</span>
             </div>
           </div>
-          <div class="bg-[#777777] bg-opacity-75 h-full w-40">
+          <div class="bg-gray-700 bg-opacity-75 h-36 sm:h-44 lg:h-56 w-24 sm:w-32 lg:w-40 p-2">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
-              <span>00:00</span>
-              <span class="tracking-wider">CLOUDY</span>
+              <span class="text-sm sm:text-lg lg:text-xl">00:00</span>
+              <font-awesome-icon icon="cloud" class="text-base sm:text-lg lg:text-5xl" />
+              <span class="tracking-wider text-xs sm:text-sm lg:text-base">CLOUDY</span>
             </div>
           </div>
-          <div class="bg-[#777777] bg-opacity-75 h-full w-40">
+          <div class="bg-gray-700 bg-opacity-75 h-36 sm:h-44 lg:h-56 w-24 sm:w-32 lg:w-40 p-2">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
-              <span>00:00</span>
-              <span class="tracking-wider">CLOUDY</span>
+              <span class="text-sm sm:text-lg lg:text-xl">00:00</span>
+              <font-awesome-icon icon="cloud" class="text-base sm:text-lg lg:text-5xl" />
+              <span class="tracking-wider text-xs sm:text-sm lg:text-base">CLOUDY</span>
             </div>
           </div>
-          <div class="bg-[#777777] bg-opacity-75 h-full w-40">
+          <div class="bg-gray-700 bg-opacity-75 h-36 sm:h-44 lg:h-56 w-24 sm:w-32 lg:w-40 p-2">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
-              <span>00:00</span>
-              <span class="tracking-wider">CLOUDY</span>
+              <span class="text-sm sm:text-lg lg:text-xl">00:00</span>
+              <font-awesome-icon icon="cloud" class="text-base sm:text-lg lg:text-5xl" />
+              <span class="tracking-wider text-xs sm:text-sm lg:text-base">CLOUDY</span>
             </div>
           </div>
-          <div class="bg-[#777777] bg-opacity-75 h-full w-40">
+          <div class="bg-gray-700 bg-opacity-75 h-36 sm:h-44 lg:h-56 w-24 sm:w-32 lg:w-40 p-2">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
-              <span>00:00</span>
-              <span class="tracking-wider">CLOUDY</span>
+              <span class="text-sm sm:text-lg lg:text-xl">00:00</span>
+              <font-awesome-icon icon="cloud" class="text-base sm:text-lg lg:text-5xl" />
+              <span class="tracking-wider text-xs sm:text-sm lg:text-base">CLOUDY</span>
             </div>
           </div>
-          <div class="bg-[#777777] bg-opacity-75 h-full w-40">
+          <div class="bg-gray-700 bg-opacity-75 h-36 sm:h-44 lg:h-56 w-24 sm:w-32 lg:w-40 p-2">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
-              <span>00:00</span>
-              <span class="tracking-wider">CLOUDY</span>
+              <span class="text-sm sm:text-lg lg:text-xl">00:00</span>
+              <font-awesome-icon icon="cloud" class="text-base sm:text-lg lg:text-5xl" />
+              <span class="tracking-wider text-xs sm:text-sm lg:text-base">CLOUDY</span>
             </div>
           </div>
+        </div>
+
+        <!-- Weekly Forecast component -->
+        <div class="flex flex-col items-center mt-4 lg:mt-0">
+          <WeeklyForecast />
         </div>
       </div>
     </div>
   </div>
+ </div>
 </template>
 
 
+
 <script>
+import WeeklyForecast from '@/components/WeeklyForecast.vue';
+
 export default {
   name: 'HomePage',
+  components: { WeeklyForecast },
   data() {
     return {
       imageUrl: 'https://preview.redd.it/xssm0vgpbph31.jpg?auto=webp&s=8f89c8e02c2d39bf8cd692f89abd22437df4d8f6',
@@ -85,18 +102,15 @@ export default {
     };
   },
   mounted() {
-    // Update time every second
     this.timeInterval = setInterval(() => {
       this.currentTime = this.getCurrentTime();
     }, 1000);
   },
-  beforeUnmount() {
-    // Clear the interval when the component is destroyed
+  beforeUnmount() {  
     clearInterval(this.timeInterval);
   },
   methods: {
     getCurrentTime() {
-      // Get current time in HH:MM format
       const now = new Date();
       const hours = String(now.getHours()).padStart(2, '0');
       const minutes = String(now.getMinutes()).padStart(2, '0');
@@ -105,4 +119,5 @@ export default {
   }
 };
 </script>
+
 
