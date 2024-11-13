@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="min-h-screen flex flex-col">
+  <div id="app" class="min-h-screen flex flex-col px-20 py-10 bg-gray-200 h-full">
     <WeatherNavbar />
     <router-view  />
     <WeatherFooter />

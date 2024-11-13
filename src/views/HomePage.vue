@@ -32,43 +32,37 @@
       <div class="flex flex-row w-full h-90 justify-center text-white font-bold text-3xl mt-4">
         <div class="flex flex-row w-full h-56 justify-center gap-4">
           <!-- Weather forecast blocks -->
-          <div class="bg-[#777777] opacity-75 h-full w-40">
+          <div class="bg-[#777777] bg-opacity-75 h-full w-40">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
               <span>00:00</span>
               <span class="tracking-wider">CLOUDY</span>
             </div>
           </div>
-          <div class="bg-[#777777] opacity-75 h-full w-40">
+          <div class="bg-[#777777] bg-opacity-75 h-full w-40">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
               <span>00:00</span>
               <span class="tracking-wider">CLOUDY</span>
             </div>
           </div>
-          <div class="bg-[#777777] opacity-75 h-full w-40">
+          <div class="bg-[#777777] bg-opacity-75 h-full w-40">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
               <span>00:00</span>
               <span class="tracking-wider">CLOUDY</span>
             </div>
           </div>
-          <div class="bg-[#777777] opacity-75 h-full w-40">
+          <div class="bg-[#777777] bg-opacity-75 h-full w-40">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
               <span>00:00</span>
               <span class="tracking-wider">CLOUDY</span>
             </div>
           </div>
-          <div class="bg-[#777777] opacity-75 h-full w-40">
+          <div class="bg-[#777777] bg-opacity-75 h-full w-40">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
               <span>00:00</span>
               <span class="tracking-wider">CLOUDY</span>
             </div>
           </div>
-          <div class="bg-[#777777] opacity-75 h-full w-40">
-            <div class="h-full w-full flex flex-col justify-evenly items-center">
-              <span>00:00</span>
-              <span class="tracking-wider">CLOUDY</span>
-            </div>
-          </div>
-          <div class="bg-[#777777] opacity-75 h-full w-40">
+          <div class="bg-[#777777] bg-opacity-75 h-full w-40">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
               <span>00:00</span>
               <span class="tracking-wider">CLOUDY</span>
