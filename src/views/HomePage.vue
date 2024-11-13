@@ -32,12 +32,20 @@
         </div>
       </div>
     </div>
+
+    <!-- Weekly Forecast -->
+    <div class="absolute bottom-6 right-6 z-20">
+      <WeeklyForecast />
+    </div>
   </div>
 </template>
 
 <script>
+import WeeklyForecast from '@/components/WeeklyForecast.vue';
+
 export default {
   name: 'HomePage',
+  components: { WeeklyForecast },
   data() {
     return {
       imageUrl: 'https://preview.redd.it/xssm0vgpbph31.jpg?auto=webp&s=8f89c8e02c2d39bf8cd692f89abd22437df4d8f6',
@@ -45,18 +53,15 @@ export default {
     };
   },
   mounted() {
-    // Update time every second
     this.timeInterval = setInterval(() => {
       this.currentTime = this.getCurrentTime();
     }, 1000);
   },
-  beforeUnmount() {  // Change from beforeDestroy to beforeUnmount
-    // Clear the interval when the component is destroyed
+  beforeUnmount() {  
     clearInterval(this.timeInterval);
   },
   methods: {
     getCurrentTime() {
-      // Get current time in HH:MM format
       const now = new Date();
       const hours = String(now.getHours()).padStart(2, '0');
       const minutes = String(now.getMinutes()).padStart(2, '0');
