@@ -16,6 +16,8 @@ FROM node:20-alpine
 
 WORKDIR /app
 
+RUN rm -rf .git
+
 COPY --from=builder /app/dist .
 
 RUN npm install -g serve
