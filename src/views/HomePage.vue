@@ -32,7 +32,7 @@
     <div class="absolute bottom-10 left-0 w-full px-6 sm:px-20 text-white z-20">
       <div class="flex flex-row justify-center gap-4 lg:gap-8">
         <!-- Weather forecast blocks -->
-        <div class="flex flex-row flex-wrap justify-center mt-14 gap-4 lg:gap-6">
+        <div class="flex flex-row items-end gap-4 lg:gap-6">
           <div class="bg-gray-700 bg-opacity-75 h-36 sm:h-44 lg:h-56 w-24 sm:w-32 lg:w-40 p-2">
             <div class="h-full w-full flex flex-col justify-evenly items-center">
               <span class="text-sm sm:text-lg lg:text-xl">00:00</span>
