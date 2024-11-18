@@ -28,7 +28,7 @@
         </div>
       </div>
 
-      <div class="flex flex-col items-center mb-6">
+      <div class="flex flex-col items-center">
         <WeatherStats />
       </div>
       
@@ -36,12 +36,12 @@
     <div class="absolute bottom-10 left-0 w-full px-6 sm:px-20 text-white z-20">
       <div class="flex flex-row justify-center gap-1 lg:gap-2">
          <!-- Hourly Forecast component -->
-        <div class="flex flex-col items-center mt-2 lg:mt-0">
+        <div class="flex flex-col items-center mt-2 lg:mt-4">
           <HourlyForecast />
         </div>
 
         <!-- Weekly Forecast component -->
-        <div class="flex flex-col items-center mt-2 lg:mt-0">
+        <div class="flex flex-col items-center mt-2 lg:mt-4">
           <WeeklyForecast />
         </div>
       </div>
