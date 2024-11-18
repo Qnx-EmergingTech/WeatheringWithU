@@ -97,7 +97,7 @@ export default {
   components: { WeeklyForecast },
   data() {
     return {
-      imageUrl: 'https://preview.redd.it/xssm0vgpbph31.jpg?auto=webp&s=8f89c8e02c2d39bf8cd692f89abd22437df4d8f6',
+      imageUrl: 'https://images.unsplash.com/photo-1668853853439-923e013afff1?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       currentTime: this.getCurrentTime() // Initialize with current time
     };
   },
