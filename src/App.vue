@@ -1,21 +1,13 @@
 <template>
-  <div id="app" class="min-h-screen flex flex-col px-20 py-10 bg-gray-200 h-full">
-    <WeatherNavbar />
+  <div id="app" class="min-h-screen flex flex-col bg-gray-200 h-full">
     <router-view  />
-    <WeatherFooter />
   </div>
 </template>
 
 <script>
-import WeatherNavbar from './components/WeatherNavbar.vue'
-import WeatherFooter from './components/WeatherFooter.vue'
 
 export default {
   name: 'App',
-  components: {
-    WeatherNavbar,
-    WeatherFooter
-  }
 };
 </script>
 
