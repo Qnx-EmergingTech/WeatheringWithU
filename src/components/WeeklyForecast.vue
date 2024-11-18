@@ -1,24 +1,34 @@
 <template>
-    <div class="w-full p-4 bg-gray-700 bg-opacity-75 rounded-lg text-white">
-        <div
-          v-for="day in forecast"
-          :key="day.date"
-          class="grid grid-cols-4 items-center justify-between p-2 space-x-4"
-        >
-          <!-- Date -->
-        <span class="text-lg font-medium text-left">{{ day.date }}</span>
+  <div class="w-full p-4">
+    <!-- Weekly Forecast Heading -->
+    <div class="text-black text-[24px] mb-4">
+      Weekly Forecast
+    </div>
 
+    <!-- Forecast Box with fixed size and responsiveness -->
+    <div class="w-full max-w-[498px] max-h-[280px]  h-full w-full p-3 bg-opacity-0 rounded-lg border border-black rounded-[25px] overflow-x-auto pl-12 pr-12">
+      <div
+        v-for="day in forecast"
+        :key="day.date"
+        class="grid grid-cols-3 items-center justify-between p-1 space-x-4"
+      >
         <!-- Day Label -->
-        <span class="text-lg font-medium text-left">{{ day.label }}</span>
+        <span class="text-[20px] text-black font-light">
+          {{ day.label }}
+        </span>
 
-         <!-- Weather Icon -->
-        <font-awesome-icon :icon="day.icon" class="h-6 w-6 text-center mx-auto" />
+        <!-- Weather Icon -->
+        <font-awesome-icon :icon="day.icon" class="h-6 w-6 mx-auto text-black pl-12" />
 
-         <!-- Temperature Range -->
-         <span class="text-lg font-semibold text-right">{{ day.minTemp }}°C / {{ day.maxTemp }}°C</span>
-         </div>
+        <!-- Temperature Range -->
+        <span class="text-[20px] text-black font-light pl-12">
+          {{ day.minTemp }}°  {{ day.maxTemp }}°
+        </span>
       </div>
-  </template>
+    </div>
+  </div>
+</template>
+
   
   <script>
   export default {
@@ -48,11 +58,9 @@
         for (let i = 0; i < 7; i++) {
           const nextDay = new Date();
           nextDay.setDate(today.getDate() + i);
-          const dayDate = nextDay.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
           const dayLabel = i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : daysOfWeek[nextDay.getDay()]; 
   
           forecastDays.push({
-            date: dayDate,
             label: dayLabel,
             ...staticForecastData[i], // Static Data 
           });
