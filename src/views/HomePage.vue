@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full h-screen flex flex-col bg-cover bg-center justify-center items-center px-[100px] py-[72px]"
+  <div class="relative w-full h-screen flex flex-col bg-cover bg-center justify-center items-center px-[100px] pt-[72px] pb-[36px]"
     :style="{ backgroundImage: `url(${imageUrl})` }">
     <!-- Side Navigation Bar -->
      <transition name="sidebar-slide">
@@ -70,7 +70,8 @@
       <div class="flex-grow overflow-y-auto w-full">
         <!-- WeatherStats -->
         <div class="flex justify-center items-center mt-16">
-        <WeatherStats />
+          
+          <WeatherStats :temperature="String(hourInformation.temp)" :uv="getUvIndex(hourInformation.uvindex)" :wind="String(hourInformation.windspeed)" :humidity="String(hourInformation.humidity)" :visibility="String(hourInformation.visibility)"/>
         </div>
 
         <!-- Hourly and Weekly Forecast -->
@@ -88,7 +89,7 @@
 
         <!-- WeatherAdditionalInfo -->
         <div class="flex flex-col items-center mt-8">
-          <WeatherAdditionalInfo />
+          <WeatherAdditionalInfo :aq="String(hourInformation.aqius)" :sunrise="convertTo12HourFormat(todayInformation.sunrise)" :sunset="convertTo12HourFormat(todayInformation.sunset)" :dew="String(todayInformation.dew)" :pressure="String(todayInformation.pressure)"/>
         </div>
       </div>
     </div>
@@ -104,7 +105,6 @@ import WeatherStats from '@/components/WeatherStats.vue';
 import WeatherAdditionalInfo from '@/components/WeatherAdditionalInfo.vue';
 import axios from 'axios';
 
-console.log(process.env.VUE_APP_API_URL);
 
 export default {
   name: 'HomePage',
@@ -115,7 +115,9 @@ export default {
       imageUrl: 'https://images.unsplash.com/photo-1668853853439-923e013afff1?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       currentTime: this.getCurrentTime(), // Initialize with current time
       formattedDate: this.getFormattedDate(),
-      apiData: [],
+      apiData: {},
+      todayInformation: {},
+      hourInformation: {}
     };
   },
   mounted() {
@@ -150,15 +152,51 @@ export default {
         this.isSidebarVisible = false; // Close sidebar if clicked outside
       }
     },
+    getUvIndex(index) {
+      switch (index) {
+        case 1:
+        case 2:
+          return "Low";
+        case 3:
+        case 4:
+        case 5:
+          return "Moderate";
+        case 6:
+        case 7:
+          return "High";
+        case 8:
+        case 9:
+        case 10:
+          return "Very High";
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+          return "Extreme";
+        default:
+          return "Invalid";
+      }
+    },
     async fetchData() {
       const apiString = process.env.VUE_APP_API_URL + "/" +this.$route.params.city.toUpperCase() + ",PH?unitGroup=metric&key=" + process.env.VUE_APP_API_KEY + "&contentType=json&elements=%2Baqius ";
+      const currentTime = new Date().getHours();
       try {
         const response = await axios.get(apiString);
         this.apiData = response.data;
-        console.log(this.apiData);
+        this.todayInformation = this.apiData.days[0]
+        this.hourInformation = this.todayInformation.hours[currentTime]
+        console.log(this.todayInformation)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
+    },
+    convertTo12HourFormat(time24) {
+      if (time24 === undefined)
+        return "undefined";
+      const [hours, minutes] = time24.split(':').map(Number); // Split and convert parts to numbers
+      const suffix = hours >= 12 ? 'PM' : 'AM';
+      const hours12 = hours % 12 || 12; // Convert to 12-hour format, replacing 0 with 12
+      return `${hours12}:${minutes.toString().padStart(2, '0')} ${suffix}`;
     },
   }
 };
