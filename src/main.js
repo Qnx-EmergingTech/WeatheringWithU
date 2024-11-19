@@ -4,9 +4,9 @@ import router from './router';
 import './assets/tailwind.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faCloud, faSun, faCloudRain, faBars, faLocationPin, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faCloud, faSun, faCloudRain, faBars, faLocationPin, faMagnifyingGlass, faWind, faTint, faEye, faArrowRight, faTemperatureHigh, faArrowsAltV} from '@fortawesome/free-solid-svg-icons';
 
-library.add(faCloud, faSun, faCloudRain, faBars, faLocationPin, faMagnifyingGlass);
+library.add(faCloud, faSun, faCloudRain, faBars, faLocationPin, faMagnifyingGlass, faWind, faTint, faEye, faArrowRight, faTemperatureHigh, faArrowsAltV); 
 
 const app = createApp(App);
 app.use(router);

@@ -66,75 +66,44 @@
           </div>
         </div>
       </div>
-      
-    <!-- Weather forecast -->
-    <div class="absolute bottom-10 left-0 w-full px-6 sm:px-20 text-white z-20">
-      <div class="flex flex-row justify-center gap-4 lg:gap-8">
-        <!-- Weather forecast blocks -->
-        <div class="flex flex-row items-end gap-4 lg:gap-6">
-          <div class="bg-gray-700 bg-opacity-75 h-36 sm:h-44 lg:h-56 w-24 sm:w-32 lg:w-40 p-2">
-            <div class="h-full w-full flex flex-col justify-evenly items-center">
-              <span class="text-sm sm:text-lg lg:text-xl">00:00</span>
-              <font-awesome-icon icon="cloud" class="text-base sm:text-lg lg:text-5xl" />
-              <span class="tracking-wider text-xs sm:text-sm lg:text-base">CLOUDY</span>
-            </div>
-          </div>
-          <div class="bg-gray-700 bg-opacity-75 h-36 sm:h-44 lg:h-56 w-24 sm:w-32 lg:w-40 p-2">
-            <div class="h-full w-full flex flex-col justify-evenly items-center">
-              <span class="text-sm sm:text-lg lg:text-xl">00:00</span>
-              <font-awesome-icon icon="cloud" class="text-base sm:text-lg lg:text-5xl" />
-              <span class="tracking-wider text-xs sm:text-sm lg:text-base">CLOUDY</span>
-            </div>
-          </div>
-          <div class="bg-gray-700 bg-opacity-75 h-36 sm:h-44 lg:h-56 w-24 sm:w-32 lg:w-40 p-2">
-            <div class="h-full w-full flex flex-col justify-evenly items-center">
-              <span class="text-sm sm:text-lg lg:text-xl">00:00</span>
-              <font-awesome-icon icon="cloud" class="text-base sm:text-lg lg:text-5xl" />
-              <span class="tracking-wider text-xs sm:text-sm lg:text-base">CLOUDY</span>
-            </div>
-          </div>
-          <div class="bg-gray-700 bg-opacity-75 h-36 sm:h-44 lg:h-56 w-24 sm:w-32 lg:w-40 p-2">
-            <div class="h-full w-full flex flex-col justify-evenly items-center">
-              <span class="text-sm sm:text-lg lg:text-xl">00:00</span>
-              <font-awesome-icon icon="cloud" class="text-base sm:text-lg lg:text-5xl" />
-              <span class="tracking-wider text-xs sm:text-sm lg:text-base">CLOUDY</span>
-            </div>
-          </div>
-          <div class="bg-gray-700 bg-opacity-75 h-36 sm:h-44 lg:h-56 w-24 sm:w-32 lg:w-40 p-2">
-            <div class="h-full w-full flex flex-col justify-evenly items-center">
-              <span class="text-sm sm:text-lg lg:text-xl">00:00</span>
-              <font-awesome-icon icon="cloud" class="text-base sm:text-lg lg:text-5xl" />
-              <span class="tracking-wider text-xs sm:text-sm lg:text-base">CLOUDY</span>
-            </div>
-          </div>
-          <div class="bg-gray-700 bg-opacity-75 h-36 sm:h-44 lg:h-56 w-24 sm:w-32 lg:w-40 p-2">
-            <div class="h-full w-full flex flex-col justify-evenly items-center">
-              <span class="text-sm sm:text-lg lg:text-xl">00:00</span>
-              <font-awesome-icon icon="cloud" class="text-base sm:text-lg lg:text-5xl" />
-              <span class="tracking-wider text-xs sm:text-sm lg:text-base">CLOUDY</span>
-            </div>
-          </div>
+
+       <!-- WeatherStats -->
+      <div class="flex justify-center items-center mt-16">
+       <WeatherStats />
+      </div>
+
+      <!-- Hourly and Weekly Forecast -->
+      <div class="flex flex-row justify-center gap-4 mt-8">
+        <!-- Hourly Forecast -->
+        <div class="flex flex-col items-center">
+          <HourlyForecast />
         </div>
 
-        <!-- Weekly Forecast component -->
-        <div class="flex flex-col items-center mt-4 lg:mt-0">
+        <!-- Weekly Forecast -->
+        <div class="flex flex-col items-center">
           <WeeklyForecast />
         </div>
-        
+      </div>
+
+      <!-- WeatherAdditionalInfo -->
+      <div class="flex flex-col items-center mt-8">
+        <WeatherAdditionalInfo />
       </div>
     </div>
   </div>
- </div>
 </template>
 
 
 
 <script>
 import WeeklyForecast from '@/components/WeeklyForecast.vue';
+import HourlyForecast from '@/components/HourlyForecast.vue';
+import WeatherStats from '@/components/WeatherStats.vue';
+import WeatherAdditionalInfo from '@/components/WeatherAdditionalInfo.vue';
 
 export default {
   name: 'HomePage',
-  components: { WeeklyForecast },
+  components: { WeeklyForecast, HourlyForecast, WeatherStats, WeatherAdditionalInfo},
   data() {
     return {
       isSidebarVisible: false, // controls visibility of the sidebar
