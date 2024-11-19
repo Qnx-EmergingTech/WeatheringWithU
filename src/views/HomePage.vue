@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full h-screen flex flex-col bg-cover bg-center justify-center items-center px-[100px] py-[72px]"
+  <div class="relative w-full h-screen flex flex-col bg-cover bg-center justify-center items-center px-[100px] pt-[72px] pb-[36px]"
     :style="{ backgroundImage: `url(${imageUrl})` }">
     <!-- Side Navigation Bar -->
      <transition name="sidebar-slide">
@@ -67,27 +67,29 @@
         </div>
       </div>
 
-       <!-- WeatherStats -->
-      <div class="flex justify-center items-center mt-16">
-       <WeatherStats />
-      </div>
-
-      <!-- Hourly and Weekly Forecast -->
-      <div class="flex flex-row justify-center gap-4 mt-8">
-        <!-- Hourly Forecast -->
-        <div class="flex flex-col items-center">
-          <HourlyForecast />
+      <div class="flex-grow overflow-y-auto w-full">
+        <!-- WeatherStats -->
+        <div class="flex justify-center items-center mt-8">
+          <WeatherStats />
         </div>
 
-        <!-- Weekly Forecast -->
-        <div class="flex flex-col items-center">
-          <WeeklyForecast />
-        </div>
-      </div>
+        <!-- Hourly and Weekly Forecast -->
+        <div class="flex flex-row justify-center gap-4 mt-8">
+          <!-- Hourly Forecast -->
+          <div class="flex flex-col items-center">
+            <HourlyForecast />
+          </div>
 
-      <!-- WeatherAdditionalInfo -->
-      <div class="flex flex-col items-center mt-8">
-        <WeatherAdditionalInfo />
+          <!-- Weekly Forecast -->
+          <div class="flex flex-col items-center">
+            <WeeklyForecast />
+          </div>
+        </div>
+
+        <!-- WeatherAdditionalInfo -->
+        <div class="flex flex-col items-center mt-8">
+          <WeatherAdditionalInfo />
+        </div>
       </div>
     </div>
   </div>
