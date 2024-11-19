@@ -16,14 +16,6 @@ jobs:
         with:
           ref: 'main'
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build Vue app
-        run: |
-          npm run build
-          echo "Vue app built successfully"
-
       - name: Create env file
         run: |
           echo VUE_APP_API_BASE_URL=${{ secrets.VUE_APP_API_BASE_URL }} > .env
