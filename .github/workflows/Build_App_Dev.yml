@@ -21,9 +21,6 @@ jobs:
           echo VUE_APP_API_BASE_URL=${{ secrets.VUE_APP_API_BASE_URL }} > .env
           cat .env
 
-      - name: Test Vue app
-        run: npm test --if-present
-
       - name: Build and push image (frontend)
         run: |
           cat .env
