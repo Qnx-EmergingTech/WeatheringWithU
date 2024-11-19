@@ -51,12 +51,12 @@
       <div class="h-auto flex flex-col justify-evenly gap-4">
         <div class="w-full text-black flex flex-row justify-between">
           <span>WeatheringWithU</span>
-          <button @click.stop="toggleSidebar" class="p-2 bg-opacity-0 text-black rounded"><font-awesome-icon icon="bars" class="" /></button>
+          <button @click.stop="toggleSidebar" class="p-2 bg-opacity-0 text-black rounded">
+            <font-awesome-icon icon="bars" class="" />
+          </button>
         </div>
         <div class="w-full flex flex-col items-center gap-4 justify-center font-thin">
-          <div class="border-2 border-black bg-opacity-0 h-auto w-[20rem] text-center rounded-full">
-            Search City
-          </div>
+          <SearchComponent />
           <div class="bg-opacity-0 h-auto w-[200px] justify-center items-center text-center text-[10rem] font-bold flex gap-3">
             <font-awesome-icon icon="location-pin" class="" />
             <span>{{ $route.params.city.toUpperCase() }}</span>
@@ -103,12 +103,13 @@ import WeeklyForecast from '@/components/WeeklyForecast.vue';
 import HourlyForecast from '@/components/HourlyForecast.vue';
 import WeatherStats from '@/components/WeatherStats.vue';
 import WeatherAdditionalInfo from '@/components/WeatherAdditionalInfo.vue';
+import SearchComponent from '@/components/SearchComponent.vue';
 import axios from 'axios';
 
 
 export default {
   name: 'HomePage',
-  components: { WeeklyForecast, HourlyForecast, WeatherStats, WeatherAdditionalInfo},
+  components: { WeeklyForecast, HourlyForecast, WeatherStats, WeatherAdditionalInfo, SearchComponent},
   data() {
     return {
       isSidebarVisible: false, // controls visibility of the sidebar
