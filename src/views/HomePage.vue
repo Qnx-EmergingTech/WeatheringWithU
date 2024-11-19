@@ -67,9 +67,9 @@
         </div>
       </div>
 
-      <!-- WeatherStats -->
-      <div class="flex flex-col items-center mt-8">
-        <WeatherStats />
+       <!-- WeatherStats -->
+      <div class="flex justify-center items-center mt-16">
+       <WeatherStats />
       </div>
 
       <!-- Hourly and Weekly Forecast -->
@@ -83,7 +83,6 @@
         <div class="flex flex-col items-center">
           <WeeklyForecast />
         </div>
-        
       </div>
 
       <!-- WeatherAdditionalInfo -->

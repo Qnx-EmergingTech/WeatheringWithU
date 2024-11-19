@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full p-4 space-x-4 flex">
+    <div class="p-4 space-x-4 flex">
       <!-- Air Quality -->
       <div class="flex flex-col items-center border border-black w-[386px] h-[204px] p-4 space-y-4 rounded-[25px]">
         <span class="text-[24px] text-black">Air Quality</span>

@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full p-4 flex justify-between space-x-4">
+    <div class="p-4 flex space-x-4">
       <!-- First Column: Temperature and Condition -->
       <div class="flex flex-col items-center h-[150px] w-[243px] justify-center p-4">
         <span class="font-bold text-2xl text-black text-[96px] mb-6 mt-4">28°</span>
