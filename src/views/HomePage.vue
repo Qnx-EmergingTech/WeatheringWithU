@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full h-screen flex flex-col bg-cover bg-center justify-center items-center px-[100px] pt-[72px] pb-[36px]"
+  <div class="relative w-full h-screen flex flex-col bg-cover bg-center justify-center items-center px-[100px] py-[72px]"
     :style="{ backgroundImage: `url(${imageUrl})` }">
     <!-- Side Navigation Bar -->
      <transition name="sidebar-slide">
@@ -69,8 +69,8 @@
 
       <div class="flex-grow overflow-y-auto w-full">
         <!-- WeatherStats -->
-        <div class="flex justify-center items-center mt-8">
-          <WeatherStats />
+        <div class="flex justify-center items-center mt-16">
+        <WeatherStats />
         </div>
 
         <!-- Hourly and Weekly Forecast -->
@@ -102,6 +102,9 @@ import WeeklyForecast from '@/components/WeeklyForecast.vue';
 import HourlyForecast from '@/components/HourlyForecast.vue';
 import WeatherStats from '@/components/WeatherStats.vue';
 import WeatherAdditionalInfo from '@/components/WeatherAdditionalInfo.vue';
+import axios from 'axios';
+
+console.log(process.env.VUE_APP_API_URL);
 
 export default {
   name: 'HomePage',
@@ -111,7 +114,8 @@ export default {
       isSidebarVisible: false, // controls visibility of the sidebar
       imageUrl: 'https://images.unsplash.com/photo-1668853853439-923e013afff1?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       currentTime: this.getCurrentTime(), // Initialize with current time
-      formattedDate: this.getFormattedDate() 
+      formattedDate: this.getFormattedDate(),
+      apiData: [],
     };
   },
   mounted() {
@@ -120,36 +124,52 @@ export default {
       this.currentTime = this.getCurrentTime();
     }, 1000);
     document.addEventListener('click', this.handleClickOutside);
+    this.fetchData();
   },
   beforeUnmount() {  
     clearInterval(this.timeInterval);
     document.removeEventListener('click', this.handleClickOutside);
   },
   methods: {
-  toggleSidebar() {
-    this.isSidebarVisible = !this.isSidebarVisible;
-  },
-  getCurrentTime() {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    return `${hours}:${minutes}`;
-  },
-  getFormattedDate() {
-    const now = new Date();
-    const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-    return now.toLocaleDateString(undefined, options); 
-  },
-  handleClickOutside(event) {
-    if (this.isSidebarVisible && !this.$refs.sidebar.contains(event.target)) {
-      this.isSidebarVisible = false;
-    }
+    toggleSidebar() {
+      this.isSidebarVisible = !this.isSidebarVisible; // Toggle visibility on button click
+    },
+    getCurrentTime() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      return `${hours}:${minutes}`;
+    },
+    getFormattedDate() {
+      const now = new Date();
+      const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+      return now.toLocaleDateString(undefined, options); 
+    },
+    handleClickOutside(event) {
+      if (this.isSidebarVisible && !this.$refs.sidebar.contains(event.target)) {
+        this.isSidebarVisible = false; // Close sidebar if clicked outside
+      }
+    },
+    async fetchData() {
+      const apiString = process.env.VUE_APP_API_URL + "/" +this.$route.params.city.toUpperCase() + ",PH?unitGroup=metric&key=" + process.env.VUE_APP_API_KEY + "&contentType=json&elements=%2Baqius ";
+      try {
+        const response = await axios.get(apiString);
+        this.apiData = response.data;
+        console.log(this.apiData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
   }
-}
 };
 </script>
 
 <style>
+.relative {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
 /* Custom Transition classes for sliding in and out */
 .sidebar-slide-enter-active,
 .sidebar-slide-leave-active {
