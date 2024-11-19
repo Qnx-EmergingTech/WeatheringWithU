@@ -5,7 +5,7 @@
       Weekly Forecast
     </div>
 
-    <!-- Forecast Box with fixed size and responsiveness -->
+    <!-- Forecast Box -->
     <div class="w-full max-w-[498px] max-h-[280px]  h-full w-full p-3 bg-opacity-0 rounded-lg border border-black rounded-[25px] overflow-x-auto pl-12 pr-12">
       <div
         v-for="day in forecast"

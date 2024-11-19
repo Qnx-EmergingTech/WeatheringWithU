@@ -46,6 +46,10 @@
         </div>
       </div>
     </div>
+
+    <div class="flex flex-col items-center">
+        <WeatherAdditionalInfo />
+      </div>
   </div>
  </div>
 </template>
@@ -56,10 +60,11 @@
 import WeeklyForecast from '@/components/WeeklyForecast.vue';
 import HourlyForecast from '@/components/HourlyForecast.vue';
 import WeatherStats from '@/components/WeatherStats.vue';
+import WeatherAdditionalInfo from '@/components/WeatherAdditionalInfo.vue';
 
 export default {
   name: 'HomePage',
-  components: { WeeklyForecast, HourlyForecast, WeatherStats},
+  components: { WeeklyForecast, HourlyForecast, WeatherStats, WeatherAdditionalInfo},
   data() {
     return {
       imageUrl: 'https://images.unsplash.com/photo-1668853853439-923e013afff1?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
