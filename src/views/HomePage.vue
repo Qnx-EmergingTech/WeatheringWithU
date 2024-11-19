@@ -62,7 +62,7 @@
             <span>{{ $route.params.city.toUpperCase() }}</span>
           </div>
           <div class="bg-opacity-0 h-auto w-auto text-center text-[2rem] font-thin flex">
-            <span>Thursday, 14 November 2023</span>
+            <span>{{ formattedDate }}</span>
           </div>
         </div>
       </div>
@@ -108,7 +108,8 @@ export default {
     return {
       isSidebarVisible: false, // controls visibility of the sidebar
       imageUrl: 'https://images.unsplash.com/photo-1668853853439-923e013afff1?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      currentTime: this.getCurrentTime() // Initialize with current time
+      currentTime: this.getCurrentTime(), // Initialize with current time
+      formattedDate: this.getFormattedDate() 
     };
   },
   mounted() {
@@ -123,21 +124,26 @@ export default {
     document.removeEventListener('click', this.handleClickOutside);
   },
   methods: {
-    toggleSidebar() {
-      this.isSidebarVisible = !this.isSidebarVisible; // Toggle visibility on button click
-    },
-    getCurrentTime() {
-      const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      return `${hours}:${minutes}`;
-    },
-    handleClickOutside(event) {
-      if (this.isSidebarVisible && !this.$refs.sidebar.contains(event.target)) {
-        this.isSidebarVisible = false; // Close sidebar if clicked outside
-      }
+  toggleSidebar() {
+    this.isSidebarVisible = !this.isSidebarVisible;
+  },
+  getCurrentTime() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
+  },
+  getFormattedDate() {
+    const now = new Date();
+    const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+    return now.toLocaleDateString(undefined, options); 
+  },
+  handleClickOutside(event) {
+    if (this.isSidebarVisible && !this.$refs.sidebar.contains(event.target)) {
+      this.isSidebarVisible = false;
     }
   }
+}
 };
 </script>
 
