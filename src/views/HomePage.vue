@@ -28,30 +28,30 @@
         </div>
       </div>
 
-      <div class="flex flex-col items-center">
+      <!-- WeatherStats -->
+      <div class="flex flex-col items-center mt-8">
         <WeatherStats />
       </div>
-      
-    <!-- Weather forecast -->
-    <div class="absolute bottom-10 left-0 w-full px-6 sm:px-20 text-white z-20">
-      <div class="flex flex-row justify-center gap-1 lg:gap-2">
-         <!-- Hourly Forecast component -->
-        <div class="flex flex-col items-center mt-2 lg:mt-4">
+
+      <!-- Hourly and Weekly Forecast -->
+      <div class="flex flex-row justify-center gap-4 mt-8">
+        <!-- Hourly Forecast -->
+        <div class="flex flex-col items-center">
           <HourlyForecast />
         </div>
 
-        <!-- Weekly Forecast component -->
-        <div class="flex flex-col items-center mt-2 lg:mt-4">
+        <!-- Weekly Forecast -->
+        <div class="flex flex-col items-center">
           <WeeklyForecast />
         </div>
       </div>
-    </div>
 
-    <div class="flex flex-col items-center">
+      <!-- WeatherAdditionalInfo -->
+      <div class="flex flex-col items-center mt-8">
         <WeatherAdditionalInfo />
       </div>
+    </div>
   </div>
- </div>
 </template>
 
 
