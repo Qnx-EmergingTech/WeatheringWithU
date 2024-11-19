@@ -1,4 +1,4 @@
-name: build_app_dev
+name: build_frontend_dev
 
 permissions:
   contents: read
@@ -16,8 +16,25 @@ jobs:
         with:
           ref: 'main'
 
-      - name: Build and push image
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Vue app
         run: |
+          npm run build
+          echo "Vue app built successfully"
+
+      - name: Create env file
+        run: |
+          echo VUE_APP_API_BASE_URL=${{ secrets.VUE_APP_API_BASE_URL }} > .env
+          cat .env
+
+      - name: Test Vue app
+        run: npm test --if-present
+
+      - name: Build and push image (frontend)
+        run: |
+          cat .env
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u qnx-dev --password-stdin
           docker pull $IMAGE_TAG
           docker build --cache-from $IMAGE_TAG -t $IMAGE_TAG .
