@@ -16,11 +16,6 @@ jobs:
         with:
           ref: 'main'
 
-      - name: Create env file
-        run: |
-          echo REACT_APP_API_BASE_URL=${{ secrets.REACT_APP_API_BASE_URL }} > .env
-          cat .env
-
       - name: Build and push image
         run: |
           cat .env
