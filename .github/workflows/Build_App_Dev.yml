@@ -1,4 +1,4 @@
-name: build_frontend_dev
+name: build_app_dev
 
 permissions:
   contents: read
