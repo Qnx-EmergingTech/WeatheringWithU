@@ -37,6 +37,11 @@
           { time: '6 pm', icon: 'cloud', temp: '29°' },
           { time: '7 pm', icon: 'cloud', temp: '29°' },
           { time: '8 pm', icon: 'cloud', temp: '29°' },
+          { time: '8 pm', icon: 'cloud', temp: '29°' },
+          { time: '8 pm', icon: 'cloud', temp: '29°' },
+          { time: '8 pm', icon: 'cloud', temp: '29°' },
+          { time: '8 pm', icon: 'cloud', temp: '29°' },
+          { time: '8 pm', icon: 'cloud', temp: '29°' },
         ],
       };
     },
