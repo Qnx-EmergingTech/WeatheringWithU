@@ -22,4 +22,4 @@ COPY --from=builder /app/dist .
 
 RUN npm install -g serve
 
-CMD ["serve", "-s", ".", "-l", "tcp://0.0.0.0:8080"]
+CMD ["serve", "-s", ".", "-l", "tcp://0.0.0.0:5000"]
