@@ -28,6 +28,7 @@ import axios from "axios";
 
 export default {
   name: "SearchComponent",
+  emits: ['location-selected'],
   data() {
     return {
       searchQuery: "",
@@ -41,7 +42,7 @@ export default {
       clearTimeout(this.debounceTimeout);
       this.debounceTimeout = setTimeout(() => {
         this.fetchCities();
-      }, 500);
+      }, 700);
     },
     async fetchCities() {
       const apiKey = process.env.VUE_APP_SECOND_API_KEY;
@@ -66,6 +67,8 @@ export default {
       this.selectedCity = city;
       this.searchQuery = `${city.LocalizedName}, ${city.Country.LocalizedName}`;
       this.filteredCities = [];
+      
+      this.$emit('location-selected', city.LocalizedName);
     },
   },
 };
