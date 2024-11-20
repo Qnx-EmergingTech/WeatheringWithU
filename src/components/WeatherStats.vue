@@ -3,7 +3,7 @@
       <!-- First Column: Temperature and Condition -->
       <div class="flex flex-col items-center h-[150px] w-[243px] justify-center p-4">
         <span class="font-bold text-2xl text-black text-[96px] mb-6 mt-4">{{temperature}}°</span>
-        <span class="text-[32px] text-black mt-2">Cloudy</span>
+        <span class="text-[32px] text-black mt-2">{{conditions}}</span>
       </div>
   
       <!-- UV Index -->
@@ -69,6 +69,10 @@
         required: true,
       },
       visibility: {
+        type: String,
+        required: true,
+      },
+      conditions: {
         type: String,
         required: true,
       },

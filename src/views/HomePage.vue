@@ -71,14 +71,14 @@
         <!-- WeatherStats -->
         <div class="flex justify-center items-center mt-16">
           
-          <WeatherStats :temperature="String(hourInformation.temp)" :uv="getUvIndex(hourInformation.uvindex)" :wind="String(hourInformation.windspeed)" :humidity="String(hourInformation.humidity)" :visibility="String(hourInformation.visibility)"/>
+          <WeatherStats :temperature="String(hourInformation.temp)" :uv="getUvIndex(hourInformation.uvindex)" :wind="String(hourInformation.windspeed)" :humidity="String(hourInformation.humidity)" :visibility="String(hourInformation.visibility)" :conditions="String(hourInformation.conditions)"/>
         </div>
 
         <!-- Hourly and Weekly Forecast -->
         <div class="flex flex-row justify-center gap-4 mt-8">
           <!-- Hourly Forecast -->
           <div class="flex flex-col items-center">
-            <HourlyForecast />
+            <HourlyForecast :hour="todayInformation.hours"/>
           </div>
 
           <!-- Weekly Forecast -->
@@ -186,7 +186,6 @@ export default {
         this.apiData = response.data;
         this.todayInformation = this.apiData.days[0]
         this.hourInformation = this.todayInformation.hours[currentTime]
-        console.log(this.todayInformation)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
