@@ -1,0 +1,45 @@
+name: build_app_dev
+
+permissions:
+  contents: read
+  packages: write
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:  # build only and deploy manually
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v3
+        with:
+          ref: 'main'
+
+      - name: Create env file
+        run: |
+          echo VUE_APP_API_URL=${{ secrets.VUE_APP_API_URL }} >> .env
+          echo VUE_APP_API_KEY=${{ secrets.VUE_APP_API_KEY }} >> .env
+          echo VUE_APP_SECOND_API_URL=${{ secrets.VUE_APP_SECOND_API_URL }} >> .env
+          echo VUE_APP_SECOND_API_URL=${{ secrets.VUE_APP_SECOND_API_KEY }} >> .env
+          echo VUE_APP_ENV=${{ secrets.VUE_APP_ENV }} >> .env
+          cat .env
+
+      - name: Build and push image (frontend)
+        run: |
+          cat .env
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u qnx-dev --password-stdin
+          docker pull $IMAGE_TAG || echo "Image not found, proceeding with build."
+          docker build --cache-from $IMAGE_TAG -t $IMAGE_TAG .
+          docker push $IMAGE_TAG
+        env:
+          IMAGE_TAG: ghcr.io/qnx-emergingtech/weatheringwithu:dev
+      - name: Send ping to repository
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        run: |
+          curl -X POST https://api.github.com/repos/qnx-emergingtech/weather-infra/actions/workflows/deploy_app_dev_pong.yml/dispatches \
+          -H 'Accept: application/vnd.github.everest-preview+json' \
+          -u ${{ env.GITHUB_TOKEN }} \
+          -d '{"ref":"main"}'
