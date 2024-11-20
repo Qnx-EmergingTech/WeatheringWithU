@@ -3,11 +3,13 @@
       <!-- Air Quality -->
       <div class="flex flex-col items-center border border-black w-[386px] h-[204px] p-4 space-y-4 rounded-[25px]">
         <span class="text-[24px] text-black">Air Quality</span>
-        <span class="text-[32px] text-black">Low ({{aq}})</span>
+        <span class="text-[32px] text-black">{{getAqIndex(aq)}} ({{aq}})</span>
         <div class="w-full h-[20px] bg-[#D9D9D9] rounded">
-          <div class="h-full w-[20%] bg-[#197BDD] rounded"></div> 
+          <div :class="['h-full', ` w-[${Math.floor((aq / 300) * 100)}%]`, `bg-[${getAqColor(aq)}]`, 'rounded']"></div> 
         </div>
       </div>
+      <!-- ${(150 / 300) * 100} -->
+      <!-- `bg[#${getAqColor(aq)}]` -->
   
       <!-- Sunrise and Sunset -->
       <div class="flex flex-col items-center border border-black w-[386px] h-[204px] p-4 space-y-4 rounded-[25px]">
@@ -68,6 +70,42 @@
       pressure: {
         type: String,
         required: true,
+      },
+    },
+    methods:{
+      getAqIndex(aqi){
+        if (aqi >= 0 && aqi <= 50) {
+            return "Good"; // Green
+        } else if (aqi >= 51 && aqi <= 100) {
+            return "Moderate"; // Yellow
+        } else if (aqi >= 101 && aqi <= 150) {
+            return "Unhealthy"; // Orange
+        } else if (aqi >= 151 && aqi <= 200) {
+            return "Unhealthy"; // Red
+        } else if (aqi >= 201 && aqi <= 300) {
+            return "Very Unhealthy"; // Purple
+        } else if (aqi > 300) {
+            return "Hazardous"; // Maroon
+        } else {
+            return "Invalid AQI"; // Error case
+        }
+      },
+      getAqColor(aqi){
+        if (aqi >= 0 && aqi <= 50) {
+            return "#00ff00"; // Green
+        } else if (aqi >= 51 && aqi <= 100) {
+            return "#FFFF00"; // Yellow
+        } else if (aqi >= 101 && aqi <= 150) {
+            return "#FFA500"; // Orange
+        } else if (aqi >= 151 && aqi <= 200) {
+            return "#FF0000"; // Red
+        } else if (aqi >= 201 && aqi <= 300) {
+            return "#A020F0"; // Purple
+        } else if (aqi > 300) {
+            return "#800000"; // Maroon
+        } else {
+            return "Invalid AQI"; // Error case
+        }
       },
     }
   };

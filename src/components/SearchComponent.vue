@@ -80,17 +80,24 @@ export default {
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
+  color: Black;
 }
 
 .search-input {
   width: 100%;
   padding: 12px;
   border-radius: 25px;
-  border: 2px solid #ccc;
+  border: 2px solid black;
+  background: transparent;
   font-size: 14px;
   box-sizing: border-box;
   transition: border-color 0.3s ease;
   text-align: center;
+}
+
+::placeholder {
+  color: black;
+  opacity: 1; /* Firefox */
 }
 
 .search-input:focus {
