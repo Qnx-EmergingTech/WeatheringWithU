@@ -18,7 +18,7 @@
         </span>
 
         <!-- Weather Icon -->
-        <font-awesome-icon :icon="day.icon" class="h-6 w-6 mx-auto text-black pl-12" />
+        <img :src="getIconUrl(day.icon)" alt="Icon" class="w-8 h-8" />
 
         <!-- Temperature Range -->
         <span class="text-[20px] text-black font-light pl-12">
@@ -68,11 +68,14 @@
   
           forecastDays.push({
             label: dayLabel,
-            ...{ icon: 'cloud', condition: newValue[i].condition, minTemp: Math.floor(newValue[i].tempmin), maxTemp: Math.floor(newValue[i].tempmax) }, // Static Data 
+            ...{ icon: newValue[i].icon, condition: newValue[i].condition, minTemp: Math.floor(newValue[i].tempmin), maxTemp: Math.floor(newValue[i].tempmax) }, // Static Data 
           });
         }
   
         return forecastDays;
+      },
+      getIconUrl(iconName) {
+        return require(`@/assets/icons/${iconName}.svg`);
       },
     },
   };

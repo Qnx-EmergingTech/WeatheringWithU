@@ -6,16 +6,16 @@
       </div>
   
       <!-- Hourly Forecast -->
-      <div class="w-full max-w-[717px] max-h-[280px] h-full bg-opacity-0 rounded-lg border border-black rounded-[25px] overflow-x-auto flex items-center">
+      <div class="w-full max-w-[717px] max-h-[280px] h-full bg-opacity-0 rounded-lg border border-black rounded-[25px] overflow-x-auto flex items-center gap-4">
         <!-- Scrollable container for hourly forecast -->
           <div
             v-for="hour in hourlyForecast"
             :key="hour.time"
-            class="bg-opacity-0 h-36 sm:h-44 lg:h-56 w-24 sm:w-32 lg:w-40 p-2 flex flex-col items-center justify-evenly gap-10"
+            class="bg-opacity-0 h-36 sm:h-44 lg:h-56 w-26 sm:w-34 lg:w-42 p-2 flex flex-col items-center justify-evenly gap-10"
           >
-            <span class="text-[20px] text-black">{{ hour.time }}</span>
-            <font-awesome-icon :icon="hour.icon" class="text-[48px] text-black text-[48px]" />
-            <span class="text-[32px] text-black ">{{ hour.temp }}</span>
+            <span class="text-[14px] text-black">{{ hour.time }}</span>
+            <img :src="getIconUrl(hour.icon)" alt="Icon" class="w-40 h-40" />
+            <span class="text-[32px] text-black ">{{ Math.floor(hour.temp) }}°</span>
           </div>
         </div>
       </div>
@@ -58,6 +58,9 @@
           temp: item.temp,
         }));
         console.log("Hourly Forecast:", this.hourlyForecast);
+      },
+      getIconUrl(iconName) {
+        return require(`@/assets/icons/${iconName}.svg`);
       },
     },
   };
