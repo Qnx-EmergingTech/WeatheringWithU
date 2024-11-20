@@ -78,7 +78,7 @@
         <div class="flex flex-row justify-center gap-4 mt-8">
           <!-- Hourly Forecast -->
           <div class="flex flex-col items-center">
-            <HourlyForecast :hour="todayInformation.hours"/>
+            <HourlyForecast :hours="todayInformation.hours"/>
           </div>
 
           <!-- Weekly Forecast -->
