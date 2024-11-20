@@ -11,33 +11,12 @@
           </div>
           <!-- Locations -->
           <div class="flex flex-col h-auto gap-4">
-            <div class="w-full flex justify-between">
+            <div v-for="(location, index) in savedLocations" :key="index" class="w-full flex justify-between cursor-pointer" @click="handleLocationSelect(location.city)">
               <div class="w-1/2 flex gap-2 items-center">
                 <font-awesome-icon icon="location-pin" class="" />
-                <spam>Lipa</spam>
+                <span>{{ location.city }}</span>
               </div>
-              <span>24°C</span>
-            </div>
-            <div class="w-full flex justify-between">
-              <div class="w-1/2 flex gap-2 items-center">
-                <font-awesome-icon icon="location-pin" class="" />
-                <spam>Lipa</spam>
-              </div>
-              <span>24°C</span>
-            </div>
-            <div class="w-full flex justify-between">
-              <div class="w-1/2 flex gap-2 items-center">
-                <font-awesome-icon icon="location-pin" class="" />
-                <spam>Lipa</spam>
-              </div>
-              <span>24°C</span>
-            </div>
-            <div class="w-full flex justify-between">
-              <div class="w-1/2 flex gap-2 items-center">
-                <font-awesome-icon icon="location-pin" class="" />
-                <spam>Lipa</spam>
-              </div>
-              <span>24°C</span>
+              <span>{{ location.temp }}°C</span>
             </div>
           </div>
           <div class="border-2 border-black bg-opacity-0 h-auto w-full text-center rounded-full">
@@ -56,7 +35,7 @@
           </button>
         </div>
         <div class="w-full flex flex-col items-center gap-4 justify-center font-thin">
-          <SearchComponent />
+          <SearchComponent @location-selected="handleLocationSelect" />
           <div class="bg-opacity-0 h-auto w-[200px] justify-center items-center text-center text-[10rem] font-bold flex gap-3">
             <font-awesome-icon icon="location-pin" class="" />
             <span>{{ $route.params.city.toUpperCase() }}</span>
@@ -70,8 +49,14 @@
       <div class="flex-grow overflow-y-auto w-full">
         <!-- WeatherStats -->
         <div class="flex justify-center items-center mt-16">
-          
-          <WeatherStats :temperature="String(hourInformation.temp)" :uv="getUvIndex(hourInformation.uvindex)" :wind="String(hourInformation.windspeed)" :humidity="String(hourInformation.humidity)" :visibility="String(hourInformation.visibility)" :conditions="String(hourInformation.conditions)"/>
+          <WeatherStats 
+            :temperature="String(hourInformation.temp)" 
+            :uv="getUvIndex(hourInformation.uvindex)" 
+            :wind="String(hourInformation.windspeed)" 
+            :humidity="String(hourInformation.humidity)" 
+            :visibility="String(hourInformation.visibility)" 
+            :conditions="String(hourInformation.conditions)"
+          />
         </div>
 
         <!-- Hourly and Weekly Forecast -->
@@ -89,14 +74,18 @@
 
         <!-- WeatherAdditionalInfo -->
         <div class="flex flex-col items-center mt-8">
-          <WeatherAdditionalInfo :aq="String(hourInformation.aqius)" :sunrise="convertTo12HourFormat(todayInformation.sunrise)" :sunset="convertTo12HourFormat(todayInformation.sunset)" :dew="String(todayInformation.dew)" :pressure="String(todayInformation.pressure)"/>
+          <WeatherAdditionalInfo 
+            :aq="String(hourInformation.aqius)" 
+            :sunrise="convertTo12HourFormat(todayInformation.sunrise)" 
+            :sunset="convertTo12HourFormat(todayInformation.sunset)" 
+            :dew="String(todayInformation.dew)" 
+            :pressure="String(todayInformation.pressure)"
+          />
         </div>
       </div>
     </div>
   </div>
 </template>
-
-
 
 <script>
 import WeeklyForecast from '@/components/WeeklyForecast.vue';
@@ -106,36 +95,62 @@ import WeatherAdditionalInfo from '@/components/WeatherAdditionalInfo.vue';
 import SearchComponent from '@/components/SearchComponent.vue';
 import axios from 'axios';
 
-
 export default {
   name: 'HomePage',
-  components: { WeeklyForecast, HourlyForecast, WeatherStats, WeatherAdditionalInfo, SearchComponent},
+  components: { 
+    WeeklyForecast, 
+    HourlyForecast, 
+    WeatherStats, 
+    WeatherAdditionalInfo, 
+    SearchComponent
+  },
   data() {
     return {
-      isSidebarVisible: false, // controls visibility of the sidebar
+      isSidebarVisible: false,
       imageUrl: 'https://images.unsplash.com/photo-1668853853439-923e013afff1?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      currentTime: this.getCurrentTime(), // Initialize with current time
+      currentTime: this.getCurrentTime(),
       formattedDate: this.getFormattedDate(),
       apiData: {},
       todayInformation: {},
-      hourInformation: {}
+      hourInformation: {},
+      savedLocations: [
+        { city: 'Manila', temp: 24 },
+        { city: 'Cebu', temp: 26 },
+        { city: 'Davao', temp: 25 },
+        { city: 'Quezon City', temp: 23 }
+      ]
     };
   },
+  watch: {
+    '$route.params.city': {
+      handler: 'fetchData',
+      immediate: true
+    }
+  },
   mounted() {
-    // Listen for clicks outside the sidebar
     this.timeInterval = setInterval(() => {
       this.currentTime = this.getCurrentTime();
     }, 1000);
     document.addEventListener('click', this.handleClickOutside);
-    this.fetchData();
   },
   beforeUnmount() {  
     clearInterval(this.timeInterval);
     document.removeEventListener('click', this.handleClickOutside);
   },
   methods: {
+    async handleLocationSelect(city) {
+      this.isSidebarVisible = false;
+      
+      if (this.$route.params.city.toLowerCase() !== city.toLowerCase()) {
+        try {
+          await this.$router.push(`/${city}`);
+        } catch (error) {
+          console.error('Navigation error:', error);
+        }
+      }
+    },
     toggleSidebar() {
-      this.isSidebarVisible = !this.isSidebarVisible; // Toggle visibility on button click
+      this.isSidebarVisible = !this.isSidebarVisible;
     },
     getCurrentTime() {
       const now = new Date();
@@ -150,7 +165,7 @@ export default {
     },
     handleClickOutside(event) {
       if (this.isSidebarVisible && !this.$refs.sidebar.contains(event.target)) {
-        this.isSidebarVisible = false; // Close sidebar if clicked outside
+        this.isSidebarVisible = false;
       }
     },
     getUvIndex(index) {
@@ -179,43 +194,44 @@ export default {
       }
     },
     async fetchData() {
-      const apiString = process.env.VUE_APP_API_URL + "/" +this.$route.params.city.toUpperCase() + ",PH?unitGroup=metric&key=" + process.env.VUE_APP_API_KEY + "&contentType=json&elements=%2Baqius ";
+      const apiString = process.env.VUE_APP_API_URL + "/" + this.$route.params.city.toUpperCase() + 
+        ",PH?unitGroup=metric&key=" + process.env.VUE_APP_API_KEY + "&contentType=json&elements=%2Baqius";
       const currentTime = new Date().getHours();
       try {
         const response = await axios.get(apiString);
         this.apiData = response.data;
-        this.todayInformation = this.apiData.days[0]
-        this.hourInformation = this.todayInformation.hours[currentTime]
+        this.todayInformation = this.apiData.days[0];
+        this.hourInformation = this.todayInformation.hours[currentTime];
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     },
     convertTo12HourFormat(time24) {
-      if (time24 === undefined)
-        return "undefined";
-      const [hours, minutes] = time24.split(':').map(Number); // Split and convert parts to numbers
+      if (time24 === undefined) return "undefined";
+      
+      const [hours, minutes] = time24.split(':').map(Number);
       const suffix = hours >= 12 ? 'PM' : 'AM';
-      const hours12 = hours % 12 || 12; // Convert to 12-hour format, replacing 0 with 12
+      const hours12 = hours % 12 || 12;
       return `${hours12}:${minutes.toString().padStart(2, '0')} ${suffix}`;
     },
   }
 };
 </script>
 
-<style>
+<style scoped>
 .relative {
   position: relative;
   height: 100%;
   overflow: hidden;
 }
-/* Custom Transition classes for sliding in and out */
+
 .sidebar-slide-enter-active,
 .sidebar-slide-leave-active {
   transition: transform 0.3s ease-in-out;
 }
 
-.sidebar-slide-enter, 
-.sidebar-slide-leave-to /* .sidebar-slide-leave-active in <2.1.8 */ {
+.sidebar-slide-enter,
+.sidebar-slide-leave-to {
   transform: translateX(100%);
 }
 
@@ -224,5 +240,3 @@ export default {
   transform: translateX(0);
 }
 </style>
-
-
