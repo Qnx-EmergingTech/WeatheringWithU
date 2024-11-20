@@ -35,24 +35,30 @@
     name: 'WeeklyForecast',
     data() {
       return {
-        forecast: this.generateForecast(),
+        forecast: [],
       };
     },
+    props:{
+      days: {
+        type: Array,
+        required: true,
+      },
+    },
+    watch: {
+      days: {
+        handler(newValue) {
+          if (newValue && newValue.length) {
+            this.forecast = this.generateForecast(newValue);
+          }
+        },
+        immediate: true, // Runs the handler immediately if data is already available
+      },
+    },
     methods: {
-      generateForecast() {
+      generateForecast(newValue) {
+        console.log(newValue)
         const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const today = new Date();
-        
-        // Static data
-        const staticForecastData = [
-          { icon: 'cloud', condition: 'Cloudy', minTemp: 28, maxTemp: 32 },
-          { icon: 'sun', condition: 'Sunny', minTemp: 27, maxTemp: 31 },
-          { icon: 'cloud-rain', condition: 'Rainy', minTemp: 25, maxTemp: 30 },
-          { icon: 'cloud', condition: 'Cloudy', minTemp: 28, maxTemp: 32 },
-          { icon: 'sun', condition: 'Sunny', minTemp: 27, maxTemp: 31 },
-          { icon: 'cloud-rain', condition: 'Rainy', minTemp: 25, maxTemp: 30 },
-          { icon: 'sun', condition: 'Sunny', minTemp: 27, maxTemp: 31 },
-        ];
   
         const forecastDays = [];
         for (let i = 0; i < 7; i++) {
@@ -62,7 +68,7 @@
   
           forecastDays.push({
             label: dayLabel,
-            ...staticForecastData[i], // Static Data 
+            ...{ icon: 'cloud', condition: newValue[i].condition, minTemp: Math.floor(newValue[i].tempmin), maxTemp: Math.floor(newValue[i].tempmax) }, // Static Data 
           });
         }
   

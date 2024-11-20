@@ -83,7 +83,7 @@
 
           <!-- Weekly Forecast -->
           <div class="flex flex-col items-center">
-            <WeeklyForecast />
+            <WeeklyForecast :days="apiData.days"/>
           </div>
         </div>
 
