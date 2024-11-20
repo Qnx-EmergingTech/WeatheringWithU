@@ -18,10 +18,10 @@ jobs:
 
       - name: Create env file
         run: |
-          echo VUE_APP_API_URL=${{ secrets.VUE_APP_API_URL }} > .env
-          echo VUE_APP_API_KEY=${{ secrets.VUE_APP_API_KEY }} > .env
-          echo VUE_APP_SECOND_API_URL=${{ secrets.VUE_APP_SECOND_API_URL }} > .env
-          echo VUE_APP_ENV=${{ secrets.VUE_APP_ENV }} > .env
+          echo VUE_APP_API_URL=${{ secrets.VUE_APP_API_URL }} >> .env
+          echo VUE_APP_API_KEY=${{ secrets.VUE_APP_API_KEY }} >> .env
+          echo VUE_APP_SECOND_API_URL=${{ secrets.VUE_APP_SECOND_API_URL }} >> .env
+          echo VUE_APP_ENV=${{ secrets.VUE_APP_ENV }} >> .env
           cat .env
 
       - name: Build and push image (frontend)
