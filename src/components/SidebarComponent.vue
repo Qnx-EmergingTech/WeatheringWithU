@@ -12,7 +12,7 @@
             <div
               v-for="(location, index) in locationsWithManageability"
               :key="index"
-              class="w-full flex justify-between" 
+              class="w-full flex justify-between text-[20px]" 
               @click.stop
             >
               <div class="w-1/2 flex gap-2 items-center">
