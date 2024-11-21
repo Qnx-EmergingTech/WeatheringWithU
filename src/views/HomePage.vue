@@ -50,7 +50,7 @@
       <div class="flex-grow overflow-y-auto w-full">
         <div class="flex justify-center items-center mt-16">
           <WeatherStats 
-            :temperature="String(hourInformation.temp)" 
+            :temperature="String(temperature)" 
             :uv="getUvIndex(hourInformation.uvindex)" 
             :wind="String(hourInformation.windspeed)" 
             :humidity="String(hourInformation.humidity)" 
@@ -107,12 +107,7 @@ export default {
       hourInformation: {},
       isLocationAdded: false,
       locations: this.getLocationsFromCookies(),
-      savedLocations: [
-        { city: 'Manila', temp: 24 },
-        { city: 'Cebu', temp: 26 },
-        { city: 'Davao', temp: 25 },
-        { city: 'Quezon City', temp: 23 }
-      ]
+      temperature: null,
     };
   },
   watch: {
@@ -217,11 +212,18 @@ export default {
       const currentTime = new Date().getHours();
       try {
         const response = await axios.get(apiString);
+        const data = response.data;
         this.apiData = response.data;
         this.todayInformation = this.apiData.days[0];
         this.hourInformation = this.todayInformation.hours[currentTime];
         this.todayInformation = this.apiData.days[0];
         this.hourInformation = this.todayInformation.hours[currentTime];
+        if (data && data.currentConditions && data.currentConditions.temp) {
+        const temperature = data.currentConditions.temp; 
+        this.temperature = temperature; 
+      } else {
+        console.error("Temperature data not found in the response:", data);
+      }
       } catch (error) {
         console.error('Error fetching data:', error);
       }

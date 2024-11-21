@@ -70,11 +70,9 @@
         this.manageMode = !this.manageMode; 
       },
   
-      removeLocation(index) {
+      async removeLocation(index) {
         const updatedLocations = [...this.localLocations]; 
         updatedLocations.splice(index, 1);
-  
-        
         this.localLocations = updatedLocations;
         this.updateLocationsCookie(updatedLocations);
       },
@@ -83,8 +81,38 @@
         Cookies.set("locations", JSON.stringify(locations));
         this.$emit("update-locations", locations); 
       },
-  },
-    computed: {
+
+      async fetchWeather(locationName) {
+        try {
+        const apiString = `${process.env.VUE_APP_API_URL}/${locationName.toUpperCase()},PH?unitGroup=metric&key=${process.env.VUE_APP_API_KEY}&contentType=json&elements=%2Baqius`;
+        const response = await fetch(apiString);
+        const data = await response.json();
+        if (data && data.currentConditions && data.currentConditions.temp) {
+        const temperature = data.currentConditions.temp;
+        return temperature;
+        } else {
+        console.error("Temperature data not found in the response:", data);
+        return null;
+        }
+    } catch (error) {
+        console.error("Error fetching weather data:", error); 
+        return null;
+    }
+        },
+
+    async updateTemperature() {
+    for (let location of this.localLocations) {
+        const temperature = await this.fetchWeather(location.name); 
+        if (temperature) {
+        location.temp = temperature; 
+        } else {
+        location.temp = "N/A";  
+        }
+    }
+    this.updateLocationsCookie(this.localLocations);  
+    },
+},
+        computed: {
       locationsWithManageability() {
         return this.localLocations.map((location) => ({
           ...location,
@@ -100,6 +128,7 @@
         if (newVal) {
           this.$nextTick(() => {
             document.addEventListener("click", this.handleClickOutside);
+            this.updateTemperature();
           });
         } else {
 
@@ -110,11 +139,12 @@
     mounted() {
       const savedLocations = Cookies.get("locations");
       if (savedLocations) {
-        const locations = JSON.parse(savedLocations);
-        this.localLocations = locations;
-        this.$emit("update-locations", locations); 
-      }
-    },
+      const locations = JSON.parse(savedLocations);
+      this.localLocations = locations;
+      this.updateTemperature(); 
+      this.$emit("update-locations", locations);
+    }
+  },
     beforeUnmount() {
       // Clean up event listener on unmount
       document.removeEventListener("click", this.handleClickOutside);
