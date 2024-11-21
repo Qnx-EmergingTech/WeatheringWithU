@@ -109,13 +109,18 @@ export default {
   },
   methods: {
     toggleAddLocation() {
-      this.isLocationAdded = !this.isLocationAdded;
-      if (this.isLocationAdded) {
-        this.addLocation({ name: this.$route.params.city, temp: this.hourInformation.temp });
-      } else {
-        this.removeLocation(this.$route.params.city);
+    if (!this.isLocationAdded) {
+      if (this.locations.length >= 5) {
+        alert('You can only save up to 5 locations.');
+        return; 
       }
-    },
+      this.addLocation({ name: this.$route.params.city, temp: this.hourInformation.temp });
+      this.isLocationAdded = true; // Only toggle if the location is successfully added
+    } else {
+      this.removeLocation(this.$route.params.city);
+      this.isLocationAdded = false; 
+    }
+  },
     toggleSidebar() {
       this.isSidebarVisible = !this.isSidebarVisible;
     },
