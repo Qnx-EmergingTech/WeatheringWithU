@@ -1,43 +1,44 @@
 <template>
   <div class="relative w-full h-screen flex flex-col bg-cover bg-center justify-center items-center px-[100px] pt-[72px] pb-[36px]"
     :style="{ backgroundImage: `url(${imageUrl})` }">
-    <!-- Side Navigation Bar -->
-     <transition name="sidebar-slide">
-      <div v-show="isSidebarVisible" class="h-screen w-[302px] absolute top-0 right-0 bg-black z-50 p-12 transition-all duration-300 ease-in-out" :style="{ backgroundImage: `url(${imageUrl})` }" ref="sidebar" >
-        <div class="flex flex-col h-screen w-full gap-10">
-          <!-- Search Bar -->
-          <div class="w-full flex justify-end">
-            <font-awesome-icon icon="magnifying-glass" class="" />
-          </div>
-          <!-- Locations -->
-          <div class="flex flex-col h-auto gap-4">
-            <div v-for="(location, index) in savedLocations" :key="index" class="w-full flex justify-between cursor-pointer" @click="handleLocationSelect(location.city)">
-              <div class="w-1/2 flex gap-2 items-center">
-                <font-awesome-icon icon="location-pin" class="" />
-                <span>{{ location.city }}</span>
-              </div>
-              <span>{{ location.temp }}°C</span>
-            </div>
-          </div>
-          <div class="border-2 border-black bg-opacity-0 h-auto w-full text-center rounded-full">
-            Manage Locations
-          </div>
-        </div>
-      </div>
-     </transition>
+    <!-- Sidebar Component -->
+    <SidebarComponent 
+      ref="sidebar" 
+      :is-visible="isSidebarVisible" 
+      :image-url="imageUrl" 
+      :locations="locations"
+      @close-sidebar="isSidebarVisible = false"
+      @location-clicked="updateLocation"
+    />
     <!-- Header -->
     <div class="w-full h-full text-black z-10 flex flex-col">
       <div class="h-auto flex flex-col justify-evenly gap-4">
         <div class="w-full text-black flex flex-row justify-between">
           <span>WeatheringWithU</span>
-          <button @click.stop="toggleSidebar" class="p-2 bg-opacity-0 text-black rounded">
-            <font-awesome-icon icon="bars" class="" />
-          </button>
+          <div class="flex flex-row gap-4">
+            <button @click="toggleAddLocation" class="tooltip-button">
+              <span 
+                class="star-icon"
+                :class="{
+                  'added': isLocationAdded,
+                  'not-added': !isLocationAdded,
+                }"
+              >
+                {{ isLocationAdded ? '★' : '☆' }}
+              </span>
+              <span class="tooltip-text">
+                {{ isLocationAdded ? 'Remove Location' : 'Add Location' }}
+              </span>
+            </button>
+            <button @click.stop="toggleSidebar" class="p-2 bg-opacity-0 text-black rounded">
+              <font-awesome-icon icon="bars" />
+            </button>
+          </div>
         </div>
         <div class="w-full flex flex-col items-center gap-4 justify-center font-thin">
           <SearchComponent @location-selected="handleLocationSelect" />
           <div class="bg-opacity-0 h-auto w-[200px] justify-center items-center text-center text-[10rem] font-bold flex gap-3">
-            <font-awesome-icon icon="location-pin" class="" />
+            <font-awesome-icon icon="location-pin" />
             <span>{{ $route.params.city.toUpperCase() }}</span>
           </div>
           <div class="bg-opacity-0 h-auto w-auto text-center text-[2rem] font-thin flex">
@@ -47,7 +48,6 @@
       </div>
 
       <div class="flex-grow overflow-y-auto w-full">
-        <!-- WeatherStats -->
         <div class="flex justify-center items-center mt-16">
           <WeatherStats 
             :temperature="String(hourInformation.temp)" 
@@ -59,20 +59,16 @@
           />
         </div>
 
-        <!-- Hourly and Weekly Forecast -->
         <div class="flex flex-row justify-center gap-4 mt-8">
-          <!-- Hourly Forecast -->
           <div class="flex flex-col items-center">
             <HourlyForecast :hours="todayInformation.hours"/>
           </div>
 
-          <!-- Weekly Forecast -->
           <div class="flex flex-col items-center">
             <WeeklyForecast :days="apiData.days"/>
           </div>
         </div>
 
-        <!-- WeatherAdditionalInfo -->
         <div class="flex flex-col items-center mt-8">
           <WeatherAdditionalInfo 
             :aq="String(hourInformation.aqius)" 
@@ -88,22 +84,18 @@
 </template>
 
 <script>
+import SidebarComponent from '@/components/SidebarComponent.vue';
 import WeeklyForecast from '@/components/WeeklyForecast.vue';
 import HourlyForecast from '@/components/HourlyForecast.vue';
 import WeatherStats from '@/components/WeatherStats.vue';
 import WeatherAdditionalInfo from '@/components/WeatherAdditionalInfo.vue';
 import SearchComponent from '@/components/SearchComponent.vue';
 import axios from 'axios';
+import Cookies from 'js-cookie'; // To handle cookies
 
 export default {
   name: 'HomePage',
-  components: { 
-    WeeklyForecast, 
-    HourlyForecast, 
-    WeatherStats, 
-    WeatherAdditionalInfo, 
-    SearchComponent
-  },
+  components: { SidebarComponent, WeeklyForecast, HourlyForecast, WeatherStats, WeatherAdditionalInfo, SearchComponent },
   data() {
     return {
       isSidebarVisible: false,
@@ -113,6 +105,8 @@ export default {
       apiData: {},
       todayInformation: {},
       hourInformation: {},
+      isLocationAdded: false,
+      locations: this.getLocationsFromCookies(),
       savedLocations: [
         { city: 'Manila', temp: 24 },
         { city: 'Cebu', temp: 26 },
@@ -133,11 +127,24 @@ export default {
     }, 1000);
     document.addEventListener('click', this.handleClickOutside);
   },
-  beforeUnmount() {  
+  beforeUnmount() {
     clearInterval(this.timeInterval);
     document.removeEventListener('click', this.handleClickOutside);
   },
   methods: {
+    toggleAddLocation() {
+    if (!this.isLocationAdded) {
+      if (this.locations.length >= 5) {
+        alert('You can only save up to 5 locations.');
+        return; 
+      }
+      this.addLocation({ name: this.$route.params.city, temp: this.hourInformation.temp });
+      this.isLocationAdded = true; // Only toggle if the location is successfully added
+    } else {
+      this.removeLocation(this.$route.params.city);
+      this.isLocationAdded = false; 
+    }
+  },
     async handleLocationSelect(city) {
       this.isSidebarVisible = false;
       
@@ -152,6 +159,11 @@ export default {
     toggleSidebar() {
       this.isSidebarVisible = !this.isSidebarVisible;
     },
+    
+    updateLocation(location) {
+      this.$route.params.city = location.name; // Update the location in the homepage
+      this.fetchData(); // Fetch data for the new location
+    },
     getCurrentTime() {
       const now = new Date();
       const hours = String(now.getHours()).padStart(2, '0');
@@ -161,13 +173,19 @@ export default {
     getFormattedDate() {
       const now = new Date();
       const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-      return now.toLocaleDateString(undefined, options); 
+      return now.toLocaleDateString(undefined, options);
     },
     handleClickOutside(event) {
-      if (this.isSidebarVisible && !this.$refs.sidebar.contains(event.target)) {
-        this.isSidebarVisible = false;
-      }
+    const sidebarElement = this.$refs.sidebar.$el || this.$refs.sidebar; 
+    if (
+    this.isSidebarVisible &&
+    sidebarElement &&
+    !sidebarElement.contains(event.target)
+   ) {
+    this.isSidebarVisible = false;
+     }
     },
+
     getUvIndex(index) {
       switch (index) {
         case 1:
@@ -202,6 +220,8 @@ export default {
         this.apiData = response.data;
         this.todayInformation = this.apiData.days[0];
         this.hourInformation = this.todayInformation.hours[currentTime];
+        this.todayInformation = this.apiData.days[0];
+        this.hourInformation = this.todayInformation.hours[currentTime];
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -214,6 +234,20 @@ export default {
       const hours12 = hours % 12 || 12;
       return `${hours12}:${minutes.toString().padStart(2, '0')} ${suffix}`;
     },
+    addLocation(location) {
+      const updatedLocations = [...this.locations, location];
+      this.locations = updatedLocations;
+      Cookies.set('locations', JSON.stringify(updatedLocations));
+    },
+    removeLocation(locationName) {
+      const updatedLocations = this.locations.filter(loc => loc.name !== locationName);
+      this.locations = updatedLocations;
+      Cookies.set('locations', JSON.stringify(updatedLocations));
+    },
+    getLocationsFromCookies() {
+      const savedLocations = Cookies.get('locations');
+      return savedLocations ? JSON.parse(savedLocations) : [];
+    }
   }
 };
 </script>
@@ -239,4 +273,51 @@ export default {
 .sidebar-slide-leave {
   transform: translateX(0);
 }
+
+.tooltip-button {
+  position: relative;
+  padding: 8px;
+  background-color: transparent;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+}
+
+.star-icon {
+  font-size: 1.7rem;
+}
+
+.star-icon.added {
+  color: #d1a300;
+}
+
+.star-icon.not-added {
+  color: black;
+}
+
+ 
+/* Tooltip Text */
+.tooltip-text {
+  position: absolute;
+  bottom: -40px; 
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #e6e4e4; 
+  color: black;
+  padding: 10px 10px;
+  border-radius: 25px;
+  font-size: 0.875rem; /* Small font size */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  width: 200px;
+  text-align: center;
+  z-index: 10;
+}
+
+.tooltip-button:hover .tooltip-text {
+  opacity: 1;
+  visibility: visible;
+}
+
 </style>

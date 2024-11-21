@@ -3,13 +3,14 @@
       <!-- Air Quality -->
       <div class="flex flex-col items-center border border-black w-[386px] h-[204px] p-4 space-y-4 rounded-[25px]">
         <span class="text-[24px] text-black">Air Quality</span>
-        <span class="text-[32px] text-black">{{getAqIndex(aq)}} ({{aq}})</span>
+        <span class="text-[32px] text-black">{{ getAqIndex(aq) }} ({{ aq }})</span>
         <div class="w-full h-[20px] bg-[#D9D9D9] rounded">
-          <div :class="['h-full', ` w-[${Math.floor((aq / 300) * 100)}%]`, `bg-[${getAqColor(aq)}]`, 'rounded']"></div> 
+          <div
+            :style="{ backgroundColor: getAqColor(aq), width: `${Math.floor((aq / 300) * 100)}%` }"
+            class="h-full rounded"
+          ></div>
         </div>
       </div>
-      <!-- ${(150 / 300) * 100} -->
-      <!-- `bg[#${getAqColor(aq)}]` -->
   
       <!-- Sunrise and Sunset -->
       <div class="flex flex-col items-center border border-black w-[386px] h-[204px] p-4 space-y-4 rounded-[25px]">
@@ -18,11 +19,11 @@
           <font-awesome-icon icon="fa-sun" class="text-[24px] text-black" />
           <span class="text-[24px] text-black">Sunrise</span>
         </div>
-        <span class="text-[32px] text-black">{{sunrise}}</span>
+        <span class="text-[32px] text-black">{{ sunrise }}</span>
         <!-- Divider -->
         <div class="w-full h-[1px] bg-black"></div>
         <!-- Sunset -->
-        <span class="text-[20px] text-black">Sunset: {{sunset}}</span>
+        <span class="text-[20px] text-black">Sunset: {{ sunset }}</span>
       </div>
   
       <!-- Dew Point and Pressure -->
@@ -33,7 +34,7 @@
             <font-awesome-icon icon="fa-temperature-high" class="text-[24px] text-black" />
             <span class="text-[24px] text-black">Dew Point</span>
           </div>
-          <span class="text-[32px] text-black">{{dew}}°</span>
+          <span class="text-[32px] text-black">{{ dew }}°</span>
         </div>
         <!-- Pressure -->
         <div class="flex justify-between w-full items-center">
@@ -41,7 +42,7 @@
             <font-awesome-icon icon="fa-arrows-alt-v" class="text-[24px] text-black" />
             <span class="text-[24px] text-black">Pressure</span>
           </div>
-          <span class="text-[32px] text-black">{{pressure}} mb</span>
+          <span class="text-[32px] text-black">{{ pressure }} mb</span>
         </div>
       </div>
     </div>
@@ -52,7 +53,7 @@
     name: "WeatherAdditionalInfo",
     props: {
       aq: {
-        type: String,
+        type: Number, // Ensure this is passed as a number
         required: true,
       },
       sunrise: {
@@ -72,42 +73,49 @@
         required: true,
       },
     },
-    methods:{
-      getAqIndex(aqi){
+    methods: {
+      getAqIndex(aqi) {
         if (aqi >= 0 && aqi <= 50) {
-            return "Good"; // Green
+          return "Good"; // Green
         } else if (aqi >= 51 && aqi <= 100) {
-            return "Moderate"; // Yellow
+          return "Moderate"; // Yellow
         } else if (aqi >= 101 && aqi <= 150) {
-            return "Unhealthy"; // Orange
+          return "Unhealthy"; // Orange
         } else if (aqi >= 151 && aqi <= 200) {
-            return "Unhealthy"; // Red
+          return "Unhealthy"; // Red
         } else if (aqi >= 201 && aqi <= 300) {
-            return "Very Unhealthy"; // Purple
+          return "Very Unhealthy"; // Purple
         } else if (aqi > 300) {
-            return "Hazardous"; // Maroon
+          return "Hazardous"; // Maroon
         } else {
-            return "Invalid AQI"; // Error case
+          return "Invalid AQI"; // Error case
         }
       },
-      getAqColor(aqi){
+      getAqColor(aqi) {
         if (aqi >= 0 && aqi <= 50) {
-            return "#00ff00"; // Green
+          return "#00ff00"; // Green
         } else if (aqi >= 51 && aqi <= 100) {
-            return "#FFFF00"; // Yellow
+          return "#FFFF00"; // Yellow
         } else if (aqi >= 101 && aqi <= 150) {
-            return "#FFA500"; // Orange
+          return "#FFA500"; // Orange
         } else if (aqi >= 151 && aqi <= 200) {
-            return "#FF0000"; // Red
+          return "#FF0000"; // Red
         } else if (aqi >= 201 && aqi <= 300) {
-            return "#A020F0"; // Purple
+          return "#A020F0"; // Purple
         } else if (aqi > 300) {
-            return "#800000"; // Maroon
+          return "#800000"; // Maroon
         } else {
-            return "Invalid AQI"; // Error case
+          return "Invalid AQI"; // Error case
         }
       },
-    }
+    },
+    mounted() {
+      console.log("AQI:", this.aq); 
+      console.log("Sunrise:", this.sunrise);
+      console.log("Sunset:", this.sunset);
+      console.log("Dew:", this.dew);
+      console.log("Pressure:", this.pressure);
+    },
   };
   </script>
   
