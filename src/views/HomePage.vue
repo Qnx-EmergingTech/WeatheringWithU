@@ -36,7 +36,7 @@
           </div>
         </div>
         <div class="w-full flex flex-col items-center gap-4 justify-center font-thin">
-          <SearchComponent />
+          <SearchComponent @location-selected="handleLocationSelect" />
           <div class="bg-opacity-0 h-auto w-[200px] justify-center items-center text-center text-[10rem] font-bold flex gap-3">
             <font-awesome-icon icon="location-pin" />
             <span>{{ $route.params.city.toUpperCase() }}</span>
@@ -49,7 +49,14 @@
 
       <div class="flex-grow overflow-y-auto w-full">
         <div class="flex justify-center items-center mt-16">
-          <WeatherStats :temperature="String(hourInformation.temp)" :uv="getUvIndex(hourInformation.uvindex)" :wind="String(hourInformation.windspeed)" :humidity="String(hourInformation.humidity)" :visibility="String(hourInformation.visibility)" :conditions="String(hourInformation.conditions)"/>
+          <WeatherStats 
+            :temperature="String(hourInformation.temp)" 
+            :uv="getUvIndex(hourInformation.uvindex)" 
+            :wind="String(hourInformation.windspeed)" 
+            :humidity="String(hourInformation.humidity)" 
+            :visibility="String(hourInformation.visibility)" 
+            :conditions="String(hourInformation.conditions)"
+          />
         </div>
 
         <div class="flex flex-row justify-center gap-4 mt-8">
@@ -63,7 +70,13 @@
         </div>
 
         <div class="flex flex-col items-center mt-8">
-          <WeatherAdditionalInfo :aq="String(hourInformation.aqius)" :sunrise="convertTo12HourFormat(todayInformation.sunrise)" :sunset="convertTo12HourFormat(todayInformation.sunset)" :dew="String(todayInformation.dew)" :pressure="String(todayInformation.pressure)"/>
+          <WeatherAdditionalInfo 
+            :aq="String(hourInformation.aqius)" 
+            :sunrise="convertTo12HourFormat(todayInformation.sunrise)" 
+            :sunset="convertTo12HourFormat(todayInformation.sunset)" 
+            :dew="String(todayInformation.dew)" 
+            :pressure="String(todayInformation.pressure)"
+          />
         </div>
       </div>
     </div>
@@ -93,15 +106,26 @@ export default {
       todayInformation: {},
       hourInformation: {},
       isLocationAdded: false,
-      locations: this.getLocationsFromCookies(), 
+      locations: this.getLocationsFromCookies(),
+      savedLocations: [
+        { city: 'Manila', temp: 24 },
+        { city: 'Cebu', temp: 26 },
+        { city: 'Davao', temp: 25 },
+        { city: 'Quezon City', temp: 23 }
+      ]
     };
+  },
+  watch: {
+    '$route.params.city': {
+      handler: 'fetchData',
+      immediate: true
+    }
   },
   mounted() {
     this.timeInterval = setInterval(() => {
       this.currentTime = this.getCurrentTime();
     }, 1000);
     document.addEventListener('click', this.handleClickOutside);
-    this.fetchData();
   },
   beforeUnmount() {
     clearInterval(this.timeInterval);
@@ -121,6 +145,17 @@ export default {
       this.isLocationAdded = false; 
     }
   },
+    async handleLocationSelect(city) {
+      this.isSidebarVisible = false;
+      
+      if (this.$route.params.city.toLowerCase() !== city.toLowerCase()) {
+        try {
+          await this.$router.push(`/${city}`);
+        } catch (error) {
+          console.error('Navigation error:', error);
+        }
+      }
+    },
     toggleSidebar() {
       this.isSidebarVisible = !this.isSidebarVisible;
     },
@@ -177,11 +212,14 @@ export default {
       }
     },
     async fetchData() {
-      const apiString = process.env.VUE_APP_API_URL + "/" + this.$route.params.city.toUpperCase() + ",PH?unitGroup=metric&key=" + process.env.VUE_APP_API_KEY + "&contentType=json&elements=%2Baqius ";
+      const apiString = process.env.VUE_APP_API_URL + "/" + this.$route.params.city.toUpperCase() + 
+        ",PH?unitGroup=metric&key=" + process.env.VUE_APP_API_KEY + "&contentType=json&elements=%2Baqius";
       const currentTime = new Date().getHours();
       try {
         const response = await axios.get(apiString);
         this.apiData = response.data;
+        this.todayInformation = this.apiData.days[0];
+        this.hourInformation = this.todayInformation.hours[currentTime];
         this.todayInformation = this.apiData.days[0];
         this.hourInformation = this.todayInformation.hours[currentTime];
       } catch (error) {
@@ -190,6 +228,7 @@ export default {
     },
     convertTo12HourFormat(time24) {
       if (time24 === undefined) return "undefined";
+      
       const [hours, minutes] = time24.split(':').map(Number);
       const suffix = hours >= 12 ? 'PM' : 'AM';
       const hours12 = hours % 12 || 12;
@@ -213,20 +252,20 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .relative {
   position: relative;
   height: 100%;
   overflow: hidden;
 }
-/* Custom Transition classes for sliding in and out */
+
 .sidebar-slide-enter-active,
 .sidebar-slide-leave-active {
   transition: transform 0.3s ease-in-out;
 }
 
-.sidebar-slide-enter, 
-.sidebar-slide-leave-to /* .sidebar-slide-leave-active in <2.1.8 */ {
+.sidebar-slide-enter,
+.sidebar-slide-leave-to {
   transform: translateX(100%);
 }
 
@@ -282,5 +321,3 @@ export default {
 }
 
 </style>
-
-
