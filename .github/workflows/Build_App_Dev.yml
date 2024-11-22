@@ -18,7 +18,6 @@ jobs:
 
       - name: Build and push image (frontend)
         run: |
-          cat .env
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u qnx-dev --password-stdin
           docker pull $IMAGE_TAG || echo "Image not found, proceeding with build."
           docker build --cache-from $IMAGE_TAG -t $IMAGE_TAG .
