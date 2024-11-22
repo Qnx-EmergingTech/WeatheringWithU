@@ -1,4 +1,4 @@
-name: build_app_ping
+name: build_app_dev
 
 permissions:
   contents: read
