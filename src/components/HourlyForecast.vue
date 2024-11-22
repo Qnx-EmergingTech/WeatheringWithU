@@ -53,7 +53,7 @@
         // Process the array data
         this.hourlyForecast = array.map(item => ({
           time: `${item.datetime.split(":")[0] % 12 || 12} ${item.datetime.split(":")[0] >= 12 ? "PM" : "AM"}`,
-          icon: 'cloud',
+          icon: item.icon,
           temp: item.temp,
         }));
       },
