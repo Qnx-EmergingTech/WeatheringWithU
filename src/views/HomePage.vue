@@ -2,14 +2,16 @@
   <div class="relative w-full h-screen flex flex-col bg-cover bg-center justify-center items-center px-[100px] pt-[72px] pb-[36px]"
     :style="{ backgroundImage: `url(${imageUrl})` }">
     <!-- Sidebar Component -->
-    <SidebarComponent 
-      ref="sidebar" 
-      :is-visible="isSidebarVisible" 
-      :image-url="imageUrl" 
-      :locations="locations"
-      @close-sidebar="isSidebarVisible = false"
-      @location-clicked="updateLocation"
-    />
+    <div class="sidebar">
+      <SidebarComponent 
+        ref="sidebar" 
+        :is-visible="isSidebarVisible" 
+        :image-url="imageUrl" 
+        :locations="locations"
+        @close-sidebar="isSidebarVisible = false"
+        @location-clicked="updateLocation"
+      />
+    </div>
     <!-- Header -->
     <div class="w-full h-full text-black z-10 flex flex-col">
       <div class="h-auto flex flex-col justify-evenly gap-4">
@@ -273,12 +275,6 @@ export default {
 </script>
 
 <style scoped>
-.relative {
-  position: relative;
-  height: 100%;
-  overflow: hidden;
-}
-
 .sidebar-slide-enter-active,
 .sidebar-slide-leave-active {
   transition: transform 0.3s ease-in-out;
