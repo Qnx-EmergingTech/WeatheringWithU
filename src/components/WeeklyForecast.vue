@@ -56,7 +56,6 @@
     },
     methods: {
       generateForecast(newValue) {
-        console.log(newValue)
         const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const today = new Date();
   

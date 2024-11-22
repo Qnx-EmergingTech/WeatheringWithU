@@ -31,7 +31,6 @@
       };
     },
     mounted() {
-      console.log(this.hour);
     },
     props:{
       hours: {
@@ -57,7 +56,6 @@
           icon: 'cloud',
           temp: item.temp,
         }));
-        console.log("Hourly Forecast:", this.hourlyForecast);
       },
       getIconUrl(iconName) {
         return require(`@/assets/icons/${iconName}.svg`);
