@@ -6,7 +6,7 @@
         :style="{ backgroundImage: `url(${imageUrl})` }"
         ref="sidebar"
       >
-        <div class="flex flex-col h-screen w-full gap-10 mt-12">
+        <div class="flex flex-col  w-full gap-10 mt-12">
           <!-- Locations -->
           <div class="flex flex-col h-auto gap-4">
             <div
