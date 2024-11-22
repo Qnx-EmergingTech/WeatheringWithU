@@ -110,11 +110,6 @@
       },
     },
     mounted() {
-      console.log("AQI:", this.aq); 
-      console.log("Sunrise:", this.sunrise);
-      console.log("Sunset:", this.sunset);
-      console.log("Dew:", this.dew);
-      console.log("Pressure:", this.pressure);
     },
   };
   </script>

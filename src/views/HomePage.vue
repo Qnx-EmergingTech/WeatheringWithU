@@ -106,7 +106,7 @@ export default {
       todayInformation: {},
       hourInformation: {},
       isLocationAdded: false,
-      locations: this.getLocationsFromCookies(),
+      locations: [],
       temperature: null,
     };
   },
@@ -115,12 +115,6 @@ export default {
       handler: 'fetchData',
       immediate: true
     }
-  },
-  mounted() {
-    this.timeInterval = setInterval(() => {
-      this.currentTime = this.getCurrentTime();
-    }, 1000);
-    document.addEventListener('click', this.handleClickOutside);
   },
   beforeUnmount() {
     clearInterval(this.timeInterval);
@@ -211,6 +205,7 @@ export default {
         ",PH?unitGroup=metric&key=" + process.env.VUE_APP_API_KEY + "&contentType=json&elements=%2Baqius";
       const currentTime = new Date().getHours();
       try {
+        console.log(this.$route.params.city.toLowerCase())
         const response = await axios.get(apiString);
         const data = response.data;
         this.apiData = response.data;
@@ -220,13 +215,23 @@ export default {
         this.hourInformation = this.todayInformation.hours[currentTime];
         if (data && data.currentConditions && data.currentConditions.temp) {
         const temperature = data.currentConditions.temp; 
-        this.temperature = temperature; 
+        this.temperature = temperature;
+        this.isLocationAdded = this.searchForCity(this.$route.params.city.toLowerCase());
       } else {
         console.error("Temperature data not found in the response:", data);
       }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
+    },
+    searchForCity(cityName){
+      for (let i = 0; i < this.locations.length; i++) {
+        // Check if the 'name' property matches the search string
+        if (this.locations[i].name.toLowerCase() === cityName) {
+          return true;
+        }
+      }
+      return false
     },
     convertTo12HourFormat(time24) {
       if (time24 === undefined) return "undefined";
@@ -248,9 +253,22 @@ export default {
     },
     getLocationsFromCookies() {
       const savedLocations = Cookies.get('locations');
-      return savedLocations ? JSON.parse(savedLocations) : [];
+      this.locations = savedLocations ? JSON.parse(savedLocations) : []
     }
-  }
+  },
+  mounted() {
+    this.timeInterval = setInterval(() => {
+      this.currentTime = this.getCurrentTime();
+    }, 1000);
+    document.addEventListener('click', this.handleClickOutside);
+    this.getLocationsFromCookies();
+    for (let i = 0; i < this.locations.length; i++) {
+      // Check if the 'name' property matches the search string
+      if (this.locations[i].name.toLowerCase() === this.$route.params.city.toLowerCase()) {
+        this.isLocationAdded = true;
+      }
+    }
+  },
 };
 </script>
 
